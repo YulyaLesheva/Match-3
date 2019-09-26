@@ -8,23 +8,19 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	Init();
 }
 
-void TestWidget::Init()
-{
-	_tex1 = Core::resourceManager.Get<Render::Texture>("btnStart_Text");
-	bg = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"));
-	
+void TestWidget::Init(){
+
+	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(0, 0));
 }
 
-void TestWidget::Draw()
-{
-	
-		///_tex1->Draw();
-		bg->Draw();
+void TestWidget::Draw(){
+
+	_background->Draw();
 }
 
-void TestWidget::Update(float dt)
-{
-	
+void TestWidget::Update(float dt){
+
+	_background->Update(dt);
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)

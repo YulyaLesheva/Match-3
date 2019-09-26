@@ -7,6 +7,10 @@
 
 class Background;
 
+#define ptr(t) \
+std::unique_ptr<t>
+
+
 class TestWidget : public GUI::Widget
 {
 public:
@@ -28,8 +32,5 @@ private:
 	void Init();
 
 private:
-	
-	Render::Texture* _tex1;
-	Background *bg;
-
+	ptr(Background) _background;
 };

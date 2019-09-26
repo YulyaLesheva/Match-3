@@ -4,15 +4,13 @@
 class Background
 {
 public:
-	Background();
-	Background(Render::Texture *tex);
+	Background(Render::Texture *tex, IPoint &position);
 	~Background();
 	void Draw();
 	void Update(float dt);
-	std::unique_ptr <Background> pidor;
-	static Background* Create(Render::Texture *tex);
-	Render::Texture* _tex;
+	static std::unique_ptr<Background> Create(Render::Texture *tex, IPoint &position);
 private:
-
+	Render::Texture* _tex;
+	IPoint _position;
 };
 
