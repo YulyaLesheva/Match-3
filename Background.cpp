@@ -2,10 +2,10 @@
 #include "Background.h"
 
 
-Background::Background(Render::Texture *tex, IPoint &position)
+Background::Background(Render::Texture *tex, const IPoint &position) :
+	_tex(tex),
+	_position(position)
 {
-	_tex = tex;
-	_position = position;
 }
 
 Background::~Background()
@@ -13,13 +13,13 @@ Background::~Background()
 }
 
 
-void Background::Draw()
-{
+void Background::Draw(){
+
 	Render::device.PushMatrix();
 	Render::device.MatrixTranslate(_position);
+	Render::device.MatrixTranslate(-_tex->_rect_width * 0.5f, -_tex->_rect_height * 0.5f, 0);
 	_tex->Draw();
 	Render::device.PopMatrix();
-
 }
 
 void Background::Update(float dt) {
@@ -27,9 +27,7 @@ void Background::Update(float dt) {
 }
 
 
-std::unique_ptr<Background> Background::Create(Render::Texture *tex, IPoint &position) {
-
-	std::unique_ptr<Background> ptr(new Background(tex, position));
+std::unique_ptr<Background> Background::Create(Render::Texture *tex, const IPoint &position) {
 	
-	return ptr;
+	return std::unique_ptr<Background>(new Background(tex, position));;
 }

@@ -6,6 +6,7 @@
 ///
 
 class Background;
+class Icons;
 
 #define ptr(t) \
 std::unique_ptr<t>
@@ -33,4 +34,9 @@ private:
 
 private:
 	ptr(Background) _background;
+	ptr(Icons) _icon;
+	using IconsVector = std::vector<std::unique_ptr<Icons>>;
+	IconsVector _icons;
+	
+	float x, y;
 };
