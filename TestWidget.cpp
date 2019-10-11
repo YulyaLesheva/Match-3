@@ -4,7 +4,9 @@
 #include "Icons.h"
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
-	: Widget(name)
+	: Widget(name),
+	col(4),
+	row(4)
 {
 	Init();
 }
@@ -15,25 +17,28 @@ void TestWidget::Init() {
 	_icon = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x, y));
 	
 	x = 0.0f;
-	y = 160.0f -_icon->GetSize();
+	y = 120-_icon->GetSize();
 
-	for (int i = 0; i <4; i++) {
+	for (int i = 0; i < row; i++) {
 		x = .0;
 		y += _icon->GetSize();
-		for (int i = 0; i < 4;i++) {
-			_icons.push_back(Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x, y)));
-			x+= _icon->GetSize();
+		for (int j = 0; j < col; j++) {
+			cell[i][j] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x, y));
+			x += _icon->GetSize();
 		}
 	}
+
 }
+
 
 void TestWidget::Draw(){
 
 	_background->Draw();
-	///_icon->Draw();
 	
-	for (auto& icon : _icons) {
-		icon->Draw();
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			cell[i][j]->Draw();
+		}
 	}
 }
 

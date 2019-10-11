@@ -35,8 +35,10 @@ private:
 private:
 	ptr(Background) _background;
 	ptr(Icons) _icon;
+	const int row;
+	const int col;
 	using IconsVector = std::vector<std::unique_ptr<Icons>>;
 	IconsVector _icons;
-	
+	std::unique_ptr<Icons> cell[4][4];
 	float x, y;
 };
