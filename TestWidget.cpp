@@ -2,6 +2,7 @@
 #include "TestWidget.h"
 #include "Background.h"
 #include "Icons.h"
+#include "RandomTile.h"
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
@@ -17,13 +18,13 @@ void TestWidget::Init() {
 	_icon = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x, y));
 	
 	x = 0.0f;
-	y = 120-_icon->GetSize();
+	y = 160-_icon->GetSize();
 
 	for (int i = 0; i < row; i++) {
 		x = .0;
 		y += _icon->GetSize();
 		for (int j = 0; j < col; j++) {
-			cell[i][j] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x, y));
+			cell[i][j] = Icons::Create(Core::resourceManager.Get<Render::Texture>(GetTile()), IPoint(x, y));
 			x += _icon->GetSize();
 		}
 	}
