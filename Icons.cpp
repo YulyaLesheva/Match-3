@@ -33,7 +33,6 @@ double Icons::GetSize() {
 	return  r;
 }
 
-std::string Icons::GetName1() {
-	auto name = _tex->GetName();
-	return name;
+std::string Icons::GetName() {
+	return _tex->GetName();
 }

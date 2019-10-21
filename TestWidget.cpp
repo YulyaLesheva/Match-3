@@ -17,8 +17,8 @@ void TestWidget::Init() {
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
 	_icon = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x, y));
 	
-	/////auto ico = Render::Texture("APPLE");
-	///auto f = ico.GetName();
+	///auto ico = Render::Texture("APPLE");
+	///ico.GetName();
 
 	x = 0.0f;
 	y = 160-_icon->GetSize();
@@ -46,8 +46,6 @@ void TestWidget::Init() {
 			x += _icon->GetSize();
 		}	
 	}
-
-	///Render::Texture::GetName();
 }
 
 
