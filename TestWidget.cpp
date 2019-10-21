@@ -48,7 +48,6 @@ void TestWidget::Init() {
 	}
 }
 
-
 void TestWidget::Draw(){
 
 	_background->Draw();
@@ -65,8 +64,13 @@ void TestWidget::Update(float dt){
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
-{
-	
+{	
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			(cell[i][j]->MouseDown(mouse_pos));
+			
+		}
+	}
 	return false;
 }
 

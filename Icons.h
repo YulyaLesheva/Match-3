@@ -11,8 +11,11 @@ public:
 	void Update(float dt);
 	double GetSize();
 	std::string GetName();
+	bool MouseDown(const IPoint &mouse_pos);
 private:
 	Render::Texture *_tex;
 	IPoint _position;
+	IRect _rect;
+	int r, g, b;
 };
 
