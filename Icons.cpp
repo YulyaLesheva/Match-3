@@ -30,6 +30,10 @@ void Icons::Update(float dt){
 
 double Icons::GetSize() {
 	auto r = _tex->_bitmap_height * .625;
-
 	return  r;
+}
+
+std::string Icons::GetName1() {
+	auto name = _tex->GetName();
+	return name;
 }

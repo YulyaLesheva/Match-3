@@ -10,6 +10,7 @@ public:
 	void Draw();
 	void Update(float dt);
 	double GetSize();
+	std::string GetName1();
 private:
 	Render::Texture *_tex;
 	IPoint _position;
