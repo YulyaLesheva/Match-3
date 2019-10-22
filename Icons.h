@@ -10,12 +10,22 @@ public:
 	void Draw();
 	void Update(float dt);
 	double GetSize();
-	std::string GetName();
 	bool MouseDown(const IPoint &mouse_pos);
+	void MakeLight();
+	std::vector<std::string> check;
+	std::string thatName;
+	std::string returnThatName();
+	IPoint ourPos;
+	IPoint GetPosition();
+	IPoint GlobalPosition;
+
+	int counter;
 private:
 	Render::Texture *_tex;
 	IPoint _position;
 	IRect _rect;
-	int r, g, b;
+	std::vector<IPoint> points;
+
+	bool _pushed;
 };
 

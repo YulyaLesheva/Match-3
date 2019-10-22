@@ -28,7 +28,9 @@ public:
 
 	void KeyPressed(int keyCode) override;
 	void CharPressed(int unicodeChar) override;
+	void Swapping();
 
+	std::vector<std::string> checkbox;
 private:
 	void Init();
 
