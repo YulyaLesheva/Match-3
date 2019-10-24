@@ -60,11 +60,21 @@ void TestWidget::Draw(){
 }
 
 void TestWidget::Update(float dt) {
-
+	Swapping();
 }
 
 void TestWidget::Swapping() {
+
+	if (savedIcons.size() == 2) {
+	///(savedIcons.front())->SetNewPosition(savedPositions[1]);
+	///	(savedIcons.back())->SetNewPosition(savedPositions[0]);
 	
+	savedIcons[0]->setNewTexture(savedTextures[1]);
+	savedIcons[1]->setNewTexture(savedTextures[0]);
+
+
+	
+}
 }
 
 
@@ -72,7 +82,16 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos){
 
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < col; j++) {
-			(cell[i][j]->MouseDown(mouse_pos));	
+			auto r = cell[i][j]->GetRectangle();
+			if (r.Contains(mouse_pos)) {
+				cell[i][j]->Push();
+				auto p = cell[i][j]->GetPosition();
+				savedPositions.push_back(p);
+				auto t = cell[i][j]->GetTexture();
+				savedTextures.push_back(t);
+				savedIcons.push_back(cell[i][j]);
+			///	break;
+			}
 		}
 	}
 	return false;

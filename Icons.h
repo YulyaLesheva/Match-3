@@ -6,7 +6,7 @@ class Icons
 public:
 	Icons(Render::Texture *tex, const IPoint &position);
 	~Icons();
-	static std::unique_ptr<Icons> Create(Render::Texture *tex, const IPoint &position);
+	static std::shared_ptr<Icons> Create(Render::Texture *tex, const IPoint &position);
 	void Draw();
 	void Update(float dt);
 	double GetSize();
@@ -14,12 +14,19 @@ public:
 	void MakeLight();
 	std::vector<std::string> check;
 	std::string thatName;
-	std::string returnThatName();
-	IPoint ourPos;
-	IPoint GetPosition();
-	IPoint GlobalPosition;
-
+	std::vector<int> locations;
 	int counter;
+	IRect GetRectangle();
+	IPoint GetPosition();
+	std::string GetName();
+	Render::Texture *GetTexture();
+	void SetNewPosition(IPoint newPosition);
+	void Push();
+	std::shared_ptr<Icons> firstIcons;
+	std::shared_ptr<Icons> secondIcons;
+	void setNewTexture(Render::Texture *newTex);
+
+
 private:
 	Render::Texture *_tex;
 	IPoint _position;

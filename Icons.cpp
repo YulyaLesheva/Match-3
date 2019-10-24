@@ -13,9 +13,9 @@ Icons::~Icons()
 {
 }
 
-std::unique_ptr<Icons> Icons::Create(Render::Texture * tex, const IPoint &position)
+std::shared_ptr<Icons> Icons::Create(Render::Texture * tex, const IPoint &position)
 {
-	return std::unique_ptr<Icons>(new Icons(tex, position));
+	return std::shared_ptr<Icons>(new Icons(tex, position));
 }
 
 void Icons::Draw() {
@@ -38,14 +38,7 @@ void Icons::MakeLight() {
 
 
 void Icons::Update(float dt){
-	
-	if (_pushed) {
-		
-	}
-}
 
-std::string Icons::returnThatName() {
-	return thatName;
 }
 
 double Icons::GetSize() {
@@ -53,17 +46,37 @@ double Icons::GetSize() {
 }
 
 bool Icons::MouseDown(const IPoint & mouse_pos){
-	
 	counter++;
-	points.push_back(_position);
-
-	_rect = IRect(_position, _tex->Width() * .625, _tex->Height() * 0.625);
-	
-	if (_rect.Contains(mouse_pos) && counter<=2) {
-		_pushed = true;
-		///_position.x = 14;
-		return true;
-	}
-
 	return false;
+}
+
+void Icons::Push() {
+	_pushed = true;
+}
+
+IRect Icons::GetRectangle() {
+	auto rect = _tex->getBitmapRect();
+	_rect = IRect(_position, rect.Width() * .625, rect.Height() * 0.625);
+
+	return _rect;
+}
+
+IPoint Icons::GetPosition() {
+	return _position;
+}
+
+std::string Icons::GetName() {
+	return _tex->GetName();
+}
+
+Render::Texture *Icons::GetTexture() {
+	return _tex;
+}
+
+void Icons::SetNewPosition(IPoint newPosition) {
+	_position = newPosition;
+}
+
+void Icons::setNewTexture(Render::Texture *newTex) {
+	_tex = newTex;
 }
