@@ -7,7 +7,8 @@
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
 	col(4),
-	row(4)
+	row(4),
+	_swapped(false)
 {
 	Init();
 }
@@ -61,20 +62,35 @@ void TestWidget::Draw(){
 
 void TestWidget::Update(float dt) {
 	Swapping();
+	
+	if (_swapped) {
+		savedIcons.clear();
+		savedTextures.clear();
+		neighbors.clear();
+		_swapped = false;
+		ableToSwap = false;
+	}
 }
 
 void TestWidget::Swapping() {
 
-	if (savedIcons.size() == 2) {
-	///(savedIcons.front())->SetNewPosition(savedPositions[1]);
-	///	(savedIcons.back())->SetNewPosition(savedPositions[0]);
-	
-	savedIcons[0]->setNewTexture(savedTextures[1]);
-	savedIcons[1]->setNewTexture(savedTextures[0]);
+	for (auto &n :neighbors) {
+		if (n == savedIcons.back()) {
+			ableToSwap = true;
+		}
+	}
 
-
-	
-}
+	if (savedIcons.size() == 2 && !_swapped) {
+		if (ableToSwap) {
+			savedIcons.front()->setNewTexture(savedTextures[1]);
+			savedIcons.back()->setNewTexture(savedTextures[0]);
+		}
+		for (auto &i:savedIcons) {
+			i->DisableLight();
+		}
+		_swapped = true;
+		ableToSwap = false;
+	}
 }
 
 
@@ -85,12 +101,24 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos){
 			auto r = cell[i][j]->GetRectangle();
 			if (r.Contains(mouse_pos)) {
 				cell[i][j]->Push();
-				auto p = cell[i][j]->GetPosition();
-				savedPositions.push_back(p);
-				auto t = cell[i][j]->GetTexture();
+				auto t = cell[i][j]->GetTexture(); 
 				savedTextures.push_back(t);
+				
 				savedIcons.push_back(cell[i][j]);
-			///	break;
+				
+				if (savedIcons.size() == 1) {
+					if (cell[i][j] != cell[0][1]) {
+						neighbors.push_back(cell[i + 1][j]);
+						neighbors.push_back(cell[i][j - 1]);
+						neighbors.push_back(cell[i][j + 1]);
+						neighbors.push_back(cell[i - 1][j]);
+					}
+					else {
+						neighbors.push_back(cell[i + 1][j]);
+						neighbors.push_back(cell[i][j - 1]);
+						neighbors.push_back(cell[i][j + 1]);
+					}
+				}
 			}
 		}
 	}

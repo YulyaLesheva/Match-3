@@ -4,8 +4,7 @@
 Icons::Icons(Render::Texture *tex, const IPoint &position) :
 	_tex(tex),
 	_position(position),
-	_pushed(false),
-	counter(0)
+	_pushed(false)
 {
 }
 
@@ -46,12 +45,18 @@ double Icons::GetSize() {
 }
 
 bool Icons::MouseDown(const IPoint & mouse_pos){
-	counter++;
+	
+
+
 	return false;
 }
 
 void Icons::Push() {
 	_pushed = true;
+}
+
+void Icons::DisableLight() {
+	_pushed = false;
 }
 
 IRect Icons::GetRectangle() {

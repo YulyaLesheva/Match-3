@@ -15,7 +15,6 @@ public:
 	std::vector<std::string> check;
 	std::string thatName;
 	std::vector<int> locations;
-	int counter;
 	IRect GetRectangle();
 	IPoint GetPosition();
 	std::string GetName();
@@ -25,7 +24,7 @@ public:
 	std::shared_ptr<Icons> firstIcons;
 	std::shared_ptr<Icons> secondIcons;
 	void setNewTexture(Render::Texture *newTex);
-
+	void DisableLight();
 
 private:
 	Render::Texture *_tex;

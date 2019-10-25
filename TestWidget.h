@@ -44,5 +44,9 @@ private:
 	std::vector<IPoint> savedPositions;
 	std::vector<std::string> savedNames;
 	std::vector<Render::Texture*> savedTextures;
+	std::vector<std::shared_ptr<Icons>> neighbors;
+
+	bool _swapped;
+	bool ableToSwap;
 	float x, y;
 };
