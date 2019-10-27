@@ -6,9 +6,13 @@
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
+	IconsNamesCell(),
+	cell(),
 	col(4),
 	row(4),
-	_swapped(false)
+	_swapped(false),
+	_needToCheckCoincidence(false),
+	_readyToRemove(false)
 {
 	Init();
 }
@@ -67,8 +71,13 @@ void TestWidget::Update(float dt) {
 		savedIcons.clear();
 		savedTextures.clear();
 		neighbors.clear();
+		_needToCheckCoincidence = true;
 		_swapped = false;
 		ableToSwap = false;
+	}
+
+	if (_needToCheckCoincidence) {
+		CheckCoincidence();
 	}
 }
 
@@ -123,6 +132,35 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos){
 		}
 	}
 	return false;
+}
+
+void TestWidget::CheckCoincidence() {
+
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			IconsNamesCell[i][j] = cell[i][j]->GetName();
+		}
+	}
+
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			if (IconsNamesCell[i][j] == IconsNamesCell[i][j+1] && IconsNamesCell[i][j] == IconsNamesCell[i][j+2]) {
+				iconsToRemove.push_back(cell[i][j]);
+				iconsToRemove.push_back(cell[i][j + 1]);
+				iconsToRemove.push_back(cell[i][j + 2]);
+	
+
+				_readyToRemove = true;
+			
+			}
+		}
+	}
+	if (_readyToRemove) {
+		for (auto &i :iconsToRemove) {
+			i->HideIcon();
+		}
+	}
+	
 }
 
 void TestWidget::MouseMove(const IPoint &mouse_pos)

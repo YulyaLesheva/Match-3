@@ -4,7 +4,8 @@
 Icons::Icons(Render::Texture *tex, const IPoint &position) :
 	_tex(tex),
 	_position(position),
-	_pushed(false)
+	_pushed(false),
+	_visiable(true)
 {
 }
 
@@ -18,13 +19,14 @@ std::shared_ptr<Icons> Icons::Create(Render::Texture * tex, const IPoint &positi
 }
 
 void Icons::Draw() {
-	
-	Render::device.PushMatrix();
-	Render::device.MatrixTranslate(_position);
-	Render::device.MatrixScale(.625);
-	_tex->Draw();
-	if (_pushed) MakeLight();
-	Render::device.PopMatrix();
+	if (_visiable) {
+		Render::device.PushMatrix();
+		Render::device.MatrixTranslate(_position);
+		Render::device.MatrixScale(.625);
+		_tex->Draw();
+		if (_pushed) MakeLight();
+		Render::device.PopMatrix();
+	}
 }
 
 void Icons::MakeLight() {
@@ -84,4 +86,8 @@ void Icons::SetNewPosition(IPoint newPosition) {
 
 void Icons::setNewTexture(Render::Texture *newTex) {
 	_tex = newTex;
+}
+
+void Icons::HideIcon() {
+	_visiable = false;
 }

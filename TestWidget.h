@@ -39,13 +39,18 @@ private:
 	const int row, col;
 	using IconsVector = std::vector<std::unique_ptr<Icons>>;
 	IconsVector _icons;
+	std::vector<std::shared_ptr<Icons>> iconsToRemove;
 	std::shared_ptr<Icons> cell[4][4];
 	std::vector<std::shared_ptr<Icons>> savedIcons;
 	std::vector<IPoint> savedPositions;
 	std::vector<std::string> savedNames;
+	std::vector<std::shared_ptr<Icons>> iconsAbove;
+	bool _readyToRemove;
+	 std::string IconsNamesCell[4][4];
 	std::vector<Render::Texture*> savedTextures;
 	std::vector<std::shared_ptr<Icons>> neighbors;
-
+	void CheckCoincidence();
+	bool _needToCheckCoincidence;
 	bool _swapped;
 	bool ableToSwap;
 	float x, y;

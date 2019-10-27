@@ -25,6 +25,8 @@ public:
 	std::shared_ptr<Icons> secondIcons;
 	void setNewTexture(Render::Texture *newTex);
 	void DisableLight();
+	bool _visiable;
+	void HideIcon();
 
 private:
 	Render::Texture *_tex;
