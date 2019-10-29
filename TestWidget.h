@@ -53,6 +53,10 @@ private:
 	void CheckCoincidence();
 	bool _needToCheckCoincidence;
 	bool _swapped;
-	bool ableToSwap;
+	bool _ableToSwap;
 	float x, y;
+	void CreateGameField();
+
+	std::shared_ptr<Icons>	TEST_ICON;
+
 };

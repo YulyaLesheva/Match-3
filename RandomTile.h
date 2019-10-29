@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "Icons.h"
 #include <random>
 
 namespace Random {
