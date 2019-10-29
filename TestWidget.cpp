@@ -66,34 +66,24 @@ void TestWidget::Draw(){
 
 void TestWidget::Update(float dt) {
 	Swapping();
-	
+
 	if (_swapped) {
 		savedIcons.clear();
 		savedTextures.clear();
-		neighbors.clear();
 		_swapped = false;
-		ableToSwap = false;
 	}
 }
 
 void TestWidget::Swapping() {
 
-	for (auto &n :neighbors) {
-		if (n == savedIcons.back()) {
-			ableToSwap = true;
-		}
-	}
-
 	if (savedIcons.size() == 2 && !_swapped) {
-		if (ableToSwap) {
-			savedIcons.front()->setNewTexture(savedTextures[1]);
-			savedIcons.back()->setNewTexture(savedTextures[0]);
-		}
+		savedIcons.front()->setNewTexture(savedTextures[1]);
+		savedIcons.back()->setNewTexture(savedTextures[0]);
+		
 		for (auto &i:savedIcons) {
 			i->DisableLight();
 		}
 		_swapped = true;
-		ableToSwap = false;
 	}
 }
 
@@ -105,17 +95,9 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos){
 			auto r = cell[i][j]->GetRectangle();
 			if (r.Contains(mouse_pos)) {
 				cell[i][j]->Push();
+				savedIcons.push_back(cell[i][j]);
 				auto t = cell[i][j]->GetTexture(); 
 				savedTextures.push_back(t);
-				
-				savedIcons.push_back(cell[i][j]);
-				
-				if (savedIcons.size() == 1) {
-					neighbors.push_back(cell[i + 1][j]);
-					neighbors.push_back(cell[i][j - 1]);
-					neighbors.push_back(cell[i][j + 1]);
-					neighbors.push_back(cell[i - 1][j]);
-				}
 			}
 		}
 	}
