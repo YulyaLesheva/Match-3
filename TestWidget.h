@@ -46,7 +46,8 @@ private:
 	std::vector<std::string> savedNames;
 	std::vector<std::shared_ptr<Icons>> iconsAbove;
 	bool _readyToRemove;
-	 std::string IconsNamesCell[4][4];
+	std::shared_ptr<Icons> IconsNamesCell[4][4];
+	std::vector<std::shared_ptr<Icons>> collideVector;
 	std::vector<Render::Texture*> savedTextures;
 	std::vector<std::shared_ptr<Icons>> neighbors;
 	void CheckCoincidence();

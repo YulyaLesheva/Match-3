@@ -5,7 +5,8 @@ Icons::Icons(Render::Texture *tex, const IPoint &position) :
 	_tex(tex),
 	_position(position),
 	_pushed(false),
-	_visiable(true)
+	_visiable(true),
+	_marked(false)
 {
 }
 
@@ -25,6 +26,7 @@ void Icons::Draw() {
 		Render::device.MatrixScale(.625);
 		_tex->Draw();
 		if (_pushed) MakeLight();
+		if (_marked) Mark();
 		Render::device.PopMatrix();
 	}
 }
@@ -90,4 +92,16 @@ void Icons::setNewTexture(Render::Texture *newTex) {
 
 void Icons::HideIcon() {
 	_visiable = false;
+}
+
+void Icons::Mark() {
+	Render::device.SetBlendMode(BlendMode::Add);
+	Render::BeginAlphaMul(0.5);
+	_tex->Draw();
+	Render::EndAlphaMul();
+	Render::device.SetBlendMode(BlendMode::Alpha);
+}
+
+void Icons::Marking() {
+	_marked = true;
 }

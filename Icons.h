@@ -27,7 +27,9 @@ public:
 	void DisableLight();
 	bool _visiable;
 	void HideIcon();
-
+	void Mark();
+	bool _marked;
+	void Marking();
 private:
 	Render::Texture *_tex;
 	IPoint _position;
