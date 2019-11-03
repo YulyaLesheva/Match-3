@@ -29,7 +29,10 @@ public:
 	void HideIcon();
 	void Mark();
 	bool _marked;
+	bool _markedToDelete;
+	void markToDelete();
 	void Marking();
+	bool _isMarkedToDelete();
 private:
 	Render::Texture *_tex;
 	IPoint _position;

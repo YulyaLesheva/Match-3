@@ -6,7 +6,8 @@ Icons::Icons(Render::Texture *tex, const IPoint &position) :
 	_position(position),
 	_pushed(false),
 	_visiable(true),
-	_marked(false)
+	_marked(false),
+	_markedToDelete(false)
 {
 }
 
@@ -49,8 +50,6 @@ double Icons::GetSize() {
 }
 
 bool Icons::MouseDown(const IPoint & mouse_pos){
-	
-
 
 	return false;
 }
@@ -104,4 +103,12 @@ void Icons::Mark() {
 
 void Icons::Marking() {
 	_marked = true;
+}
+
+void Icons::markToDelete() {
+	_markedToDelete = true;
+}
+
+bool Icons::_isMarkedToDelete() {
+	return _markedToDelete;
 }

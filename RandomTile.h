@@ -3,8 +3,9 @@
 #include <random>
 
 namespace Random {
+	
 	std::string archive[7] = { "milk", "orange", "apple", "flower", "cocos", "bread", "brokkoli" };
-
+	
 	std::string GetRandomTile() {
 
 		std::random_device rd;
@@ -16,4 +17,5 @@ namespace Random {
 		return icon;
 	}
 }
+
 
