@@ -63,10 +63,14 @@ private:
 	std::shared_ptr<Icons> row_3_array[4];
 	Render::Texture* row_3_Textures_array[4];
 
+	bool _matchesFinded;
 
+	void FindMatches();
 	void InitGameField();
 	void CheckCoincidence();
+	void Replace();
 
+	bool _replaced;
 	bool _needToCheckCoincidence;
 	bool _swapped;
 	bool _readyToCheckRow;

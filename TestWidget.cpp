@@ -13,7 +13,9 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	_needToCheckCoincidence(false),
 	_readyToRemove(false),
 	_ableToSwap(false),
-	_readyToCheckRow(false)
+	_readyToCheckRow(false),
+	_matchesFinded(false),
+	_replaced(false)
 {
 	Init();
 }
@@ -80,12 +82,37 @@ void TestWidget::Update(float dt) {
 	}
 
 	if (_readyToCheckRow) {
+		FindMatches();
+	}
+
+	collideVector.clear();
+	namesCollideVector.clear();
+	_readyToRemove = false;
+}
+
+void TestWidget::FindMatches(){
+	
 		for (int i = 0; i < row; i++) {
 			if (row_0_Textures_array[i] == row_0_Textures_array[i + 1] && row_0_Textures_array[i]
 				== row_0_Textures_array[i + 2]) {
-				row_0_array[i]->Marking();
-				row_0_array[i+1]->Marking();
-				row_0_array[i+2]->Marking();
+				row_0_array[i]->setNewTexture(row_1_Textures_array[i]);
+				row_0_array[i + 1]->setNewTexture(row_1_Textures_array[i + 1]);
+				row_0_array[i + 2]->setNewTexture(row_1_Textures_array[i + 2]);
+
+				row_1_array[i]->setNewTexture(row_2_Textures_array[i]);
+				row_1_array[i + 1]->setNewTexture(row_2_Textures_array[i + 1]);
+				row_1_array[i + 2]->setNewTexture(row_2_Textures_array[i + 2]);
+
+				row_2_array[i]->setNewTexture(row_3_Textures_array[i]);
+				row_2_array[i + 1]->setNewTexture(row_3_Textures_array[i + 1]);
+				row_2_array[i + 2]->setNewTexture(row_3_Textures_array[i + 2]);
+
+				row_3_array[i]->setNewTexture(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()));
+				row_3_array[i + 1]->setNewTexture(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()));
+				row_3_array[i + 2]->setNewTexture(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()));
+
+				_readyToCheckRow = false;
+
 			}
 			if (row_1_Textures_array[i] == row_1_Textures_array[i + 1] && row_1_Textures_array[i]
 				== row_1_Textures_array[i + 2]) {
@@ -105,12 +132,13 @@ void TestWidget::Update(float dt) {
 				row_3_array[i + 1]->Marking();
 				row_3_array[i + 2]->Marking();
 			}
-		}
+		
 	}
 
-	collideVector.clear();
-	namesCollideVector.clear();
-	_readyToRemove = false;
+}
+void TestWidget::Replace() {
+	
+	
 }
 
 void TestWidget::Swapping() {

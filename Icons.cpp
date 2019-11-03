@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Icons.h"
-
 Icons::Icons(Render::Texture *tex, const IPoint &position) :
 	_tex(tex),
 	_position(position),
@@ -112,3 +111,4 @@ void Icons::markToDelete() {
 bool Icons::_isMarkedToDelete() {
 	return _markedToDelete;
 }
+
