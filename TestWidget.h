@@ -41,5 +41,6 @@ private:
 	float _iconsSide;
 	void LookForMatches(int rows, int cols);
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete;
-	std::vector<std::shared_ptr<Icons>>* CurrentVector;
+	///std::vector<std::shared_ptr<Icons>>* CurrentVector;
+	std::vector<std::vector<std::shared_ptr<Icons>>*> CheckVertMatches();
 };
