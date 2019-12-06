@@ -30,28 +30,28 @@ void TestWidget::Init() {
 	x = 0;
 	y = 0;
 
-	GameField[0][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(0, 960 - _iconsSide * 2));
-	GameField[0][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 1, 960 - _iconsSide*2));
-	GameField[0][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 2));
-	GameField[0][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 3, 960 - _iconsSide*2));
+	GameField[0][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(0, 960 - _iconsSide * 2));
+	GameField[0][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("milk"), IPoint(x + _iconsSide * 1, 960 - _iconsSide*2));
+	GameField[0][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("milk"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 2));
+	GameField[0][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 3, 960 - _iconsSide*2));
 
 
-	GameField[1][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(0 , 960 - _iconsSide * 3));
-	GameField[1][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 3));
-	GameField[1][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 3));
-	GameField[1][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 3));
+	GameField[1][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(0 , 960 - _iconsSide * 3));
+	GameField[1][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 3));
+	GameField[1][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 3));
+	GameField[1][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("orange"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 3));
 
 
-	GameField[2][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(0, 960 - _iconsSide * 4));
-	GameField[2][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 4));
-	GameField[2][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 4));
-	GameField[2][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 4));
+	GameField[2][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(0, 960 - _iconsSide * 4));
+	GameField[2][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 4));
+	GameField[2][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 4));
+	GameField[2][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("orange"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 4));
 
 
-	GameField[3][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(0, 960 - _iconsSide * 5));
-	GameField[3][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 5));
-	GameField[3][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 5));
-	GameField[3][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 5));
+	GameField[3][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(0, 960 - _iconsSide * 5));
+	GameField[3][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 5));
+	GameField[3][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 5));
+	GameField[3][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 5));
 
 
 	bool test = false;
@@ -68,10 +68,18 @@ void TestWidget::Init() {
 				break;
 			}
 		}*/
+	
+	auto v = CheckMatches();
+	
+}
+
+
+std::vector<std::vector<std::shared_ptr<Icons>>*> TestWidget::CheckMatches() {
+
 	for (int r = 0; r < 4; r++) {
 		bool found = false;
 		for (int i = 0; i < 2; i++) {
-			auto vector = new std::vector<std::shared_ptr<Icons>>;
+			vector = new std::vector<std::shared_ptr<Icons>>;
 			vector->push_back(GameField[r][i]);
 			for (int c = i; c < 3; c++) {
 				if (vector->back()->GetTexture() == GameField[r][c + 1]->GetTexture()) {
@@ -92,11 +100,41 @@ void TestWidget::Init() {
 				break;
 			}
 		}
+
+		found = false;
+
+		for (int rw = 0; rw < 2; rw++) {
+			vector = new std::vector<std::shared_ptr<Icons>>;
+			vector->push_back(GameField[rw][r]);
+			for (int rg = rw; rg < 3; rg++) {
+				if (vector->back()->GetTexture() == GameField[rg + 1][r]->GetTexture()) {
+					vector->push_back(GameField[rg + 1][r]);
+					found = true;
+				}
+
+				else {
+					break;
+				}
+			}
+			if (vector->size() > 2) {
+				VectorForDelete.push_back(vector);
+			}
+
+			if (found) {
+				break;
+			}
+		}
 	}
-	
+
+	return VectorForDelete;
+}
+/*
+std::vector<std::shared_ptr<Icons>>* TestWidget::VerticMatches() {
 
 }
+std::vector<std::shared_ptr<Icons>>* TestWidget::HorizMatches() {
 
+}*/
 
 std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 	auto icon = Icons::Create(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()), IPoint(position));

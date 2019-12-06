@@ -41,6 +41,10 @@ private:
 	float _iconsSide;
 	void LookForMatches(int rows, int cols);
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete;
-	///std::vector<std::shared_ptr<Icons>>* CurrentVector;
-	std::vector<std::vector<std::shared_ptr<Icons>>*> CheckVertMatches();
+	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete1;
+	std::vector<std::shared_ptr<Icons>>* vector;
+	std::vector<std::vector<std::shared_ptr<Icons>>*> CheckMatches();
+	std::vector<std::shared_ptr<Icons>>* VerticMatches();
+	std::vector<std::shared_ptr<Icons>>* HorizMatches();
+
 };
