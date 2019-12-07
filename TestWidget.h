@@ -44,7 +44,8 @@ private:
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete1;
 	std::vector<std::shared_ptr<Icons>>* vector;
 	std::vector<std::vector<std::shared_ptr<Icons>>*> CheckMatches();
-	std::vector<std::shared_ptr<Icons>>* VerticMatches();
-	std::vector<std::shared_ptr<Icons>>* HorizMatches();
+	std::vector<std::vector<std::shared_ptr<Icons>>*>* LookForMatches();
+	std::vector<std::shared_ptr<Icons>>* VerticMatches(int rows, int cols);
+	std::vector<std::shared_ptr<Icons>>* HorizMatches(int rows, int cols);
 
 };
