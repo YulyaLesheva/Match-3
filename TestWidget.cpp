@@ -186,11 +186,9 @@ bool TestWidget::LookForPossibles() {
 	int needOne[][2] = {{-1, 1},
 						{1, 1}};
 
-	for (int rows = 0; rows < 4; rows++) {
-		for (int cols = 0; cols < 4;cols++) {
-			if (MatchPattern(rows, cols, mustHave, needOne)) return true;
-		}
-	}
+	
+	if (MatchPattern(1, 1, mustHave, needOne)) return true;
+	
 	return false;
 }
 
@@ -202,12 +200,17 @@ bool TestWidget::MatchPattern(int rows, int cols, int mustHave[2], int needOne[]
 }
 
 bool TestWidget::MatchType(int rows, int cols, Render::Texture *tex) {
-	if ((rows < 0) || (rows > 4) || (cols < 0) || (rows > 4)) return false;
-	auto newTexture = GameField[rows][cols]->GetTexture();
-	if (tex == newTexture) return true;
-
+	
+	if ((rows < 0) || (rows > 4) || (cols < 0) || (cols > 4)) return false;
+	
+	if (GameField[rows][cols] != NULL) {
+		auto newTex = GameField[rows][cols]->GetTexture();
+			if (tex == newTex) return true;
+	}
+	
 	return false;
 }
+
 
 std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 	auto icon = Icons::Create(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()), IPoint(position));
