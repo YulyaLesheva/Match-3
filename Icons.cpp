@@ -31,3 +31,7 @@ float Icons::GetSize() {
 Render::Texture* Icons::GetTexture() {
 	return _tex;
 }
+
+void Icons::SetNewTexture(Render::Texture *newTex) {
+	_tex = newTex;
+}

@@ -10,6 +10,7 @@ public:
 	void Draw();
 	float Icons::GetSize();
 	Render::Texture* GetTexture();
+	void SetNewTexture(Render::Texture *newTex);
 private:
 	Render::Texture *_tex;
 	IPoint _position;

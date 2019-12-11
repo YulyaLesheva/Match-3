@@ -40,6 +40,7 @@ private:
 	int col, row;
 	float _iconsSide;
 	void LookForMatches(int rows, int cols);
+	
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete;
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete1;
 	std::vector<std::shared_ptr<Icons>>* vector;
@@ -47,5 +48,7 @@ private:
 	std::vector<std::vector<std::shared_ptr<Icons>>*>* LookForMatches();
 	std::vector<std::shared_ptr<Icons>>* VerticMatches(int rows, int cols);
 	std::vector<std::shared_ptr<Icons>>* HorizMatches(int rows, int cols);
-
+	bool LookForPossibles();
+	bool MatchPattern(int rows, int cols, int mustHave[2], int needOne[][2]);
+	bool MatchType(int rows, int cols, Render::Texture *tex);
 };
