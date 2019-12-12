@@ -49,6 +49,6 @@ private:
 	std::vector<std::shared_ptr<Icons>>* VerticMatches(int rows, int cols);
 	std::vector<std::shared_ptr<Icons>>* HorizMatches(int rows, int cols);
 	bool LookForPossibles();
-	bool MatchPattern(int rows, int cols, int mustHave[2], int needOne[][2]);
+	bool MatchPattern(int rows, int cols, int mustHave[], int needOne[][2]);
 	bool MatchType(int rows, int cols, Render::Texture *tex);
 };
