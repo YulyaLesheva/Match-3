@@ -35,3 +35,7 @@ Render::Texture* Icons::GetTexture() {
 void Icons::SetNewTexture(Render::Texture *newTex) {
 	_tex = newTex;
 }
+
+void Icons::SetPosition(IPoint &newPosition) {
+	_position = newPosition;
+}

@@ -18,17 +18,26 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 void TestWidget::Init() {
 	
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-
-	for (int r = 0; r < row; r++) {
-		x = 0;
-		y -= _iconsSide;
-		for (int c = 0; c < col; c++) {
-			GameField[r][c] = SetRandomIcon(IPoint(x,y));
-			x += _iconsSide;
-		}
-	}
 	
+	while (true) {
+		x = 0;
+		y = 960 - 256 * .625;
+		for (int r = 0; r < row; r++) {
+			x = 0;
+			y -= _iconsSide;
+			for (int c = 0; c < col; c++) {
+				GameField[r][c] = SetRandomIcon(IPoint(x, y));
+				x += _iconsSide;
+			}
+		}
+		if (!LookForMatches()->empty()) continue;
 
+		if (LookForPossibles() == false) continue;
+
+		break;
+	}
+
+	
 	/*
 	x = 0;
 	y = 0;
@@ -125,7 +134,7 @@ bool TestWidget::LookForPossibles() {
 	int mustHave3[2] = {1,0};
 	std::vector<std::vector<int>> myVectorNeedOne3 = {{-2, 0},{-1,-1},{-1,1},{2,-1},{2,1},{3,0}};
 
-	int mustHave4[2] = { 2,0 };
+	int mustHave4[2] = {2,0};
 	std::vector<std::vector<int>> myVectorNeedOne4 = {{1,-1},{1,1}};
 
 	for (int rows = 0; rows < 4; rows++) {
@@ -139,7 +148,6 @@ bool TestWidget::LookForPossibles() {
 			if (MatchPattern(rows, cols, mustHave4, myVectorNeedOne4)) return true;// вертик, две по разным сторонам
 		}
 	}
-
 
 	return false;
 }
