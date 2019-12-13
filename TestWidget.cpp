@@ -116,13 +116,27 @@ std::vector<std::vector<std::shared_ptr<Icons>>*> *TestWidget::LookForMatches() 
 }
 
 bool TestWidget::LookForPossibles() {
-	int mustHave[2] = {0,2};
-	int needOne[][2] = {{-1, 1},
-						{1, 1}};
+	int mustHave1[2] = {0,2};
+	std::vector<std::vector<int>> myVectorNeedOne1 ={{-1,1},{1,1}};
+
+	int mustHave2[2] = {0,1};
+	std::vector<std::vector<int>> myVectorNeedOne2 = {{0,-2},{-1,-1},{1,-1},{-1,2},{1,2},{0,3}};
+
+	int mustHave3[2] = {1,0};
+	std::vector<std::vector<int>> myVectorNeedOne3 = {{-2, 0},{-1,-1},{-1,1},{2,-1},{2,1},{3,0}};
+
+	int mustHave4[2] = { 2,0 };
+	std::vector<std::vector<int>> myVectorNeedOne4 = {{1,-1},{1,1}};
 
 	for (int rows = 0; rows < 4; rows++) {
 		for (int cols = 0; cols < 4;cols++) {
-			if (MatchPattern(rows, cols, mustHave, needOne)) return true;
+			if (MatchPattern(rows, cols, mustHave1, myVectorNeedOne1)) return true;// гориз, две по разным сторонам
+
+			if (MatchPattern(rows, cols, mustHave2, myVectorNeedOne2)) return true;// гориз, две подряд
+
+			if (MatchPattern(rows, cols, mustHave3, myVectorNeedOne3)) return true;// вертик, две подряд
+
+			if (MatchPattern(rows, cols, mustHave4, myVectorNeedOne4)) return true;// вертик, две по разным сторонам
 		}
 	}
 
@@ -130,12 +144,15 @@ bool TestWidget::LookForPossibles() {
 	return false;
 }
 
-bool TestWidget::MatchPattern(int rows, int cols, int mustHave[], int needOne[][2]) {
+bool TestWidget::MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne) {
+	
 	auto texture = GameField[rows][cols]->GetTexture();
 	if (!MatchType(rows + mustHave[0], cols + mustHave[1], texture)) return false;
 
-	for (int i = 0; i < 2; i++) {
-		if (MatchType(rows + needOne[i][0], cols + needOne[i][1], texture)) {
+	int sizeofv = myVectorNeedOne.size();
+
+	for (int i = 0; i <sizeofv; i++) {
+		if (MatchType(rows + myVectorNeedOne[i][0], cols + myVectorNeedOne[i][1], texture)) {
 			return true;
 		}
 	}

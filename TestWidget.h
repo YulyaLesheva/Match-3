@@ -38,6 +38,7 @@ private:
 	std::shared_ptr<Icons> GameField[4][4];
 	float x, y;
 	int col, row;
+	int rw;
 	float _iconsSide;
 	void LookForMatches(int rows, int cols);
 	
@@ -49,6 +50,6 @@ private:
 	std::vector<std::shared_ptr<Icons>>* VerticMatches(int rows, int cols);
 	std::vector<std::shared_ptr<Icons>>* HorizMatches(int rows, int cols);
 	bool LookForPossibles();
-	bool MatchPattern(int rows, int cols, int mustHave[], int needOne[][2]);
+	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
 	bool MatchType(int rows, int cols, Render::Texture *tex);
 };
