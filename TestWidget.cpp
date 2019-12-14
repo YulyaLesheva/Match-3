@@ -10,7 +10,7 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	row(4),
 	_iconsSide(256 * .625),
 	x(0),
-	y(960-(256 * .625))
+	y(0)
 {
 	Init();
 }
@@ -36,7 +36,6 @@ void TestWidget::Init() {
 
 		break;
 	}
-
 	
 	/*
 	x = 0;
@@ -196,19 +195,16 @@ void TestWidget::Draw() {
 	}
 }
 
-void TestWidget::LookForMatches(int rows, int cols) {
-	 
-	
-}
-
 void TestWidget::Update(float dt) {
 
 }
 
-
-
 bool TestWidget::MouseDown(const IPoint &mouse_pos){	
-
+	for (int r = 0; r < 4; r++) {
+		for (int c = 0; c < 4;c++) {
+			GameField[r][c]->MouseDown(mouse_pos);
+			}
+	}
 	return false;
 }
 

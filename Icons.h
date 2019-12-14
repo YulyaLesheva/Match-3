@@ -12,6 +12,12 @@ public:
 	float Icons::GetSize();
 	Render::Texture* GetTexture();
 	void SetNewTexture(Render::Texture *newTex);
+	IRect GetRect();
+	bool MouseDown(const IPoint &mouse_pos);
+	void Light();
+	void MakeLigth();
+	bool IsLigth();
+	bool _isLight;
 private:
 	Render::Texture *_tex;
 	IPoint _position;
