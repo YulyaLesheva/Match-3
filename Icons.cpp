@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "Icons.h"
-Icons::Icons(Render::Texture *tex, const IPoint &position) :
+Icons::Icons(Render::Texture *tex, const IPoint &position, int row, int col) :
 	_tex(tex),
 	_position(position),
-	_isLight(false)
+	_isLight(false),
+	_marked(false),
+	_cols(col),
+	_rows(row)
 {
 }
 
@@ -11,9 +14,9 @@ Icons::~Icons()
 {
 }
 
-std::shared_ptr<Icons> Icons::Create(Render::Texture * tex, const IPoint &position)
+std::shared_ptr<Icons> Icons::Create(Render::Texture * tex, const IPoint &position, int row, int col)
 {
-	return std::shared_ptr<Icons>(new Icons(tex, position));
+	return std::shared_ptr<Icons>(new Icons(tex, position, row, col));
 }
 
 void Icons::Draw() {
@@ -50,6 +53,7 @@ IRect Icons::GetRect() {
 bool Icons::MouseDown(const IPoint &mouse_pos){
 	if (GetRect().Contains(mouse_pos)) {
 		MakeLigth();
+		Mark();
 		return true;
 	}
 	return false;
@@ -57,7 +61,7 @@ bool Icons::MouseDown(const IPoint &mouse_pos){
 
 void Icons::Light(){
 	Render::device.SetBlendMode(BlendMode::Add);
-	Render::BeginAlphaMul(0.1);
+	Render::BeginAlphaMul(0.5);
 	_tex->Draw();
 	Render::EndAlphaMul();
 	Render::device.SetBlendMode(BlendMode::Alpha);
@@ -66,7 +70,38 @@ void Icons::Light(){
 void Icons::MakeLigth() {
 	_isLight = true;
 }
+void Icons::DisableLigth() {
+	_isLight = false;
+}
 
 bool Icons::IsLigth() {
 	return _isLight;
+}
+
+void Icons::Mark() {
+	_marked = true;
+}
+
+bool Icons::IsMarked() {
+	return _marked;
+}
+
+void Icons::MarkOff() {
+	_marked = false;
+}
+
+int Icons::ReturnRow() {
+	return _rows;
+}
+
+int Icons::ReturnCol() {
+	return _cols;
+}
+
+void Icons::SetRow(int r) {
+	_rows = r;
+}
+
+void Icons::SetCol(int c){
+	_cols = c;
 }

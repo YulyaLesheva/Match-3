@@ -40,7 +40,6 @@ private:
 	int col, row;
 	int rw;
 	float _iconsSide;
-	void LookForMatches(int rows, int cols);
 	
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete;
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete1;
@@ -52,4 +51,11 @@ private:
 	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
 	bool MatchType(int rows, int cols, Render::Texture *tex);
 	void createGameField();
+	std::vector<std::vector<int>> TilesToSwipe;
+	bool CheckNeighbors();
+	std::vector<std::shared_ptr<Icons>> savedTiles;
+
+
+	int testRow, testCol;
+
 };

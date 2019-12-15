@@ -20,6 +20,7 @@ void TestWidget::Init() {
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
 	
 	while (true) {
+		testRow = 0;
 		x = 0;
 		y = 960 - 256 * .625;
 		for (int r = 0; r < row; r++) {
@@ -27,6 +28,8 @@ void TestWidget::Init() {
 			y -= _iconsSide;
 			for (int c = 0; c < col; c++) {
 				GameField[r][c] = SetRandomIcon(IPoint(x, y));
+				GameField[r][c]->SetCol(c);
+				GameField[r][c]->SetRow(r);
 				x += _iconsSide;
 			}
 		}
@@ -67,6 +70,9 @@ void TestWidget::Init() {
 	bool check =false;
 	auto v = LookForMatches();
 	check = LookForPossibles();
+
+	auto mmmm = GameField[0][1]->ReturnRow();
+	auto aaaah = GameField[0][1]->ReturnCol();
 
 }
 
@@ -181,7 +187,7 @@ bool TestWidget::MatchType(int rows, int cols, Render::Texture *tex) {
 
 
 std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
-	auto icon = Icons::Create(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()), IPoint(position));
+	auto icon = Icons::Create(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()), IPoint(position), 0, 0);
 	return icon;
 }
 
@@ -196,15 +202,61 @@ void TestWidget::Draw() {
 }
 
 void TestWidget::Update(float dt) {
+	
+	if (savedTiles.size()==2) {
+		CheckNeighbors();
+	}
+}
 
+bool TestWidget::CheckNeighbors() {
+
+	if (savedTiles.front()->ReturnRow()==savedTiles.back()->ReturnRow() && savedTiles.front()->ReturnCol()==savedTiles.back()->ReturnCol()) {
+		for (auto &t : savedTiles) {
+			t->DisableLigth();
+			t->MarkOff();
+		}
+		savedTiles.clear();
+	}
+	
+	 else if (savedTiles.front()->ReturnRow()==savedTiles.back()->ReturnRow() && abs(savedTiles.front()->ReturnCol() - savedTiles.back()->ReturnCol()) ==1) {
+		for (auto &t : savedTiles) {
+			t->DisableLigth();
+			t->MarkOff();
+		}
+		savedTiles.clear();
+	}
+
+	 else if (savedTiles.front()->ReturnCol() == savedTiles.back()->ReturnCol() && abs(savedTiles.front()->ReturnRow() - savedTiles.back()->ReturnRow() == 1)) {
+		for (auto &t : savedTiles) {
+			t->DisableLigth();
+			t->MarkOff();
+		}
+		savedTiles.clear();
+	}
+
+	 else {
+		for (auto &t : savedTiles) {
+			t->DisableLigth();
+			t->MarkOff();
+		}
+		savedTiles.clear();
+	}
+	
+	return false;
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos){	
+
 	for (int r = 0; r < 4; r++) {
-		for (int c = 0; c < 4;c++) {
+		for (int c = 0; c < 4; c++) {
 			GameField[r][c]->MouseDown(mouse_pos);
+			if (GameField[r][c]->IsMarked()) {
+			savedTiles.push_back(GameField[r][c]);	
+			GameField[r][c]->MarkOff();
 			}
+		}
 	}
+
 	return false;
 }
 
