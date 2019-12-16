@@ -191,7 +191,6 @@ std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 	return icon;
 }
 
-
 void TestWidget::Draw() {
 	_background->Draw();
 	for (int r = 0; r < row; r++) {
@@ -216,22 +215,27 @@ bool TestWidget::CheckNeighbors() {
 			t->MarkOff();
 		}
 		savedTiles.clear();
+		return true;
 	}
 	
 	 else if (savedTiles.front()->ReturnRow()==savedTiles.back()->ReturnRow() && abs(savedTiles.front()->ReturnCol() - savedTiles.back()->ReturnCol()) ==1) {
+		MakeSwap(savedTiles);
 		for (auto &t : savedTiles) {
 			t->DisableLigth();
 			t->MarkOff();
 		}
 		savedTiles.clear();
+		return true;
 	}
 
-	 else if (savedTiles.front()->ReturnCol() == savedTiles.back()->ReturnCol() && abs(savedTiles.front()->ReturnRow() - savedTiles.back()->ReturnRow() == 1)) {
+	 else if (savedTiles.front()->ReturnCol() == savedTiles.back()->ReturnCol() && abs(savedTiles.front()->ReturnRow() - savedTiles.back()->ReturnRow()) == 1) {
+		MakeSwap(savedTiles);
 		for (auto &t : savedTiles) {
 			t->DisableLigth();
 			t->MarkOff();
 		}
 		savedTiles.clear();
+		return true;
 	}
 
 	 else {
@@ -240,6 +244,7 @@ bool TestWidget::CheckNeighbors() {
 			t->MarkOff();
 		}
 		savedTiles.clear();
+		return true;
 	}
 	
 	return false;
@@ -260,6 +265,18 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos){
 	return false;
 }
 
+void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
+	auto firstTex = iconsToSwipe.front()->GetTexture();
+	auto secondTex = iconsToSwipe.back()->GetTexture();
+	
+	iconsToSwipe.front()->SetNewTexture(secondTex);
+	iconsToSwipe.back()->SetNewTexture(firstTex);
+
+	if(LookForMatches()->empty()){
+		iconsToSwipe.front()->SetNewTexture(firstTex);
+		iconsToSwipe.back()->SetNewTexture(secondTex);
+	}
+}
 
 void TestWidget::MouseMove(const IPoint &mouse_pos)
 {

@@ -54,8 +54,8 @@ private:
 	std::vector<std::vector<int>> TilesToSwipe;
 	bool CheckNeighbors();
 	std::vector<std::shared_ptr<Icons>> savedTiles;
-
-
+	void MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe);
+	
 	int testRow, testCol;
 
 };
