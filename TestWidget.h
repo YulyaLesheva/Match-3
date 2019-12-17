@@ -43,14 +43,14 @@ private:
 	
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete;
 	std::vector<std::vector<std::shared_ptr<Icons>>*> VectorForDelete1;
-	std::vector<std::shared_ptr<Icons>>* vector;
-	std::vector<std::vector<std::shared_ptr<Icons>>*>* LookForMatches();
-	std::vector<std::shared_ptr<Icons>>* VerticMatches(int rows, int cols);
-	std::vector<std::shared_ptr<Icons>>* HorizMatches(int rows, int cols);
+	std::vector<std::shared_ptr<Icons>> vector;
+	std::vector<std::vector<std::shared_ptr<Icons>>> LookForMatches();
+	std::vector<std::shared_ptr<Icons>> VerticMatches(int rows, int cols);
+	std::vector<std::shared_ptr<Icons>> HorizMatches(int rows, int cols);
 	bool LookForPossibles();
 	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
 	bool MatchType(int rows, int cols, Render::Texture *tex);
-	void createGameField();
+	void AffectAbove();
 	std::vector<std::vector<int>> TilesToSwipe;
 	bool CheckNeighbors();
 	std::vector<std::shared_ptr<Icons>> savedTiles;

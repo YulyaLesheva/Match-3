@@ -27,7 +27,10 @@ public:
 	void DisableLigth();
 	void SetRow(int r);
 	void SetCol(int c);
-	
+	void ChangeRowAndCol(int newRow, int newCol);
+	void MakeUnvisiable();
+	bool _visiable;
+	bool  IsVisiable();
 private:
 	Render::Texture *_tex;
 	IPoint _position;

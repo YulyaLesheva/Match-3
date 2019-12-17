@@ -33,7 +33,7 @@ void TestWidget::Init() {
 				x += _iconsSide;
 			}
 		}
-		if (!LookForMatches()->empty()) continue;
+		if (!LookForMatches().empty()) continue;
 
 		if (LookForPossibles() == false) continue;
 
@@ -70,19 +70,18 @@ void TestWidget::Init() {
 	bool check =false;
 	auto v = LookForMatches();
 	check = LookForPossibles();
-
-	auto mmmm = GameField[0][1]->ReturnRow();
-	auto aaaah = GameField[0][1]->ReturnCol();
+	
 
 }
 
-std::vector<std::shared_ptr<Icons>>* TestWidget::VerticMatches(int rows, int cols) {
+std::vector<std::shared_ptr<Icons>> TestWidget::VerticMatches(int rows, int cols) {
 	
-	auto vector = new std::vector<std::shared_ptr<Icons>>;
-	vector->push_back(GameField[rows][cols]);
+	std::vector<std::shared_ptr<Icons>> vector;
+
+	vector.push_back(GameField[rows][cols]);
 	for (int i = 1; rows + i < 4; i++) {
-		if (vector->back()->GetTexture() == GameField[rows+i][cols]->GetTexture()) {
-			vector->push_back(GameField[rows+i][cols]);
+		if (vector.back()->GetTexture() == GameField[rows+i][cols]->GetTexture()) {
+			vector.push_back(GameField[rows+i][cols]);
 		}
 		else return vector;
 	}
@@ -90,28 +89,30 @@ std::vector<std::shared_ptr<Icons>>* TestWidget::VerticMatches(int rows, int col
 }
 
 
-std::vector<std::shared_ptr<Icons>>* TestWidget::HorizMatches(int rows, int cols) {
+std::vector<std::shared_ptr<Icons>> TestWidget::HorizMatches(int rows, int cols) {
 	
-	auto vector = new std::vector<std::shared_ptr<Icons>>;
-	vector->push_back(GameField[rows][cols]);
+	std::vector<std::shared_ptr<Icons>> vector;
+
+	vector.push_back(GameField[rows][cols]);
 	for (int i = 1; cols + i < 4; i++) {
-		if (vector->back()->GetTexture() == GameField[rows][cols+i]->GetTexture()) {
-			vector->push_back(GameField[rows][cols + i]);
+		if (vector.back()->GetTexture() == GameField[rows][cols+i]->GetTexture()) {
+			vector.push_back(GameField[rows][cols + i]);
 		}
 		else return vector;
 	}
 	return vector;
 }
 
-std::vector<std::vector<std::shared_ptr<Icons>>*> *TestWidget::LookForMatches() {
+std::vector<std::vector<std::shared_ptr<Icons>>> TestWidget::LookForMatches() {
 	
-	auto VectorOfVectors = new std::vector<std::vector<std::shared_ptr<Icons>>*>;
+	std::vector<std::vector<std::shared_ptr<Icons>>> VectorOfVectors;
+
 	for (int rows = 0; rows < 4; rows++) {
 		for (int cols = 0; cols < 2; cols++) {
 			auto vector = HorizMatches(rows,cols);
-			if (vector->size()>2) {
-				VectorOfVectors->push_back(vector);
-				cols += vector->size() - 1;
+			if (vector.size()>2) {
+				VectorOfVectors.push_back(vector);
+				cols += vector.size() - 1;
 			}
 		}
 	}
@@ -119,14 +120,33 @@ std::vector<std::vector<std::shared_ptr<Icons>>*> *TestWidget::LookForMatches() 
 	for (int cols = 0; cols < 4; cols++) {
 		for (int rows = 0; rows < 2; rows++) {
 			auto vector = VerticMatches(rows, cols);
-			if (vector->size() > 2) {
-				VectorOfVectors->push_back(vector);
-				rows += vector->size() - 1;
+			if (vector.size() > 2) {
+				VectorOfVectors.push_back(vector);
+				rows += vector.size() - 1;
 			}
 		}
 	}
 
 	return VectorOfVectors;
+}
+
+void TestWidget::AffectAbove() {
+
+	for (int r = 0; r < 4; r++) {
+		for (int c = 0; c < 4; c++) {
+			if (GameField[r][c]->GetTexture()==NULL) {
+				for (int i = r; i >= 0; i--) {
+					if (i>0) {
+						GameField[i][c]->SetNewTexture(GameField[i-1][c]->GetTexture());
+					}
+					else {
+						GameField[i][c]->SetNewTexture(Core::resourceManager.Get<Render::Texture>(Random::GetRandomTile()));
+					}
+				}
+			}
+		}
+	}
+	
 }
 
 bool TestWidget::LookForPossibles() {
@@ -205,6 +225,16 @@ void TestWidget::Update(float dt) {
 	if (savedTiles.size()==2) {
 		CheckNeighbors();
 	}
+
+	if (!LookForMatches().empty()) {
+		auto mmmmmm = LookForMatches();
+		
+		for (auto i : mmmmmm.front()) {
+			i->MakeUnvisiable();
+		}
+	}
+	AffectAbove();
+	
 }
 
 bool TestWidget::CheckNeighbors() {
@@ -272,9 +302,10 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 	iconsToSwipe.front()->SetNewTexture(secondTex);
 	iconsToSwipe.back()->SetNewTexture(firstTex);
 
-	if(LookForMatches()->empty()){
+	if(LookForMatches().empty()){
 		iconsToSwipe.front()->SetNewTexture(firstTex);
 		iconsToSwipe.back()->SetNewTexture(secondTex);
+
 	}
 }
 

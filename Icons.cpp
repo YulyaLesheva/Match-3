@@ -5,6 +5,7 @@ Icons::Icons(Render::Texture *tex, const IPoint &position, int row, int col) :
 	_position(position),
 	_isLight(false),
 	_marked(false),
+	_visiable(true),
 	_cols(col),
 	_rows(row)
 {
@@ -20,12 +21,14 @@ std::shared_ptr<Icons> Icons::Create(Render::Texture * tex, const IPoint &positi
 }
 
 void Icons::Draw() {
-	Render::device.PushMatrix();
-	Render::device.MatrixTranslate(_position);
-	Render::device.MatrixScale(.625);
-	_tex->Draw();
-	if(_isLight) Light();
-	Render::device.PopMatrix();
+	if (_tex != NULL) {
+		Render::device.PushMatrix();
+		Render::device.MatrixTranslate(_position);
+		Render::device.MatrixScale(.625);
+		_tex->Draw();
+		if (_isLight) Light();
+		Render::device.PopMatrix();
+	}
 }
 
 float Icons::GetSize() {
@@ -45,8 +48,11 @@ void Icons::SetPosition(IPoint &newPosition) {
 }
 
 IRect Icons::GetRect() {
-	auto rect = _tex->getBitmapRect();
-	_rect = IRect(_position, rect.Width() * .625, rect.Height() * .625);
+	if (_tex != NULL) {
+		auto rect = _tex->getBitmapRect();
+		_rect = IRect(_position, rect.Width() * .625, rect.Height() * .625);
+
+	}
 	return _rect;
 }
 
@@ -104,4 +110,18 @@ void Icons::SetRow(int r) {
 
 void Icons::SetCol(int c){
 	_cols = c;
+}
+
+void Icons::ChangeRowAndCol(int newRow, int newCol) {
+	_rows = newRow;
+	_cols = newCol;
+}
+
+void Icons::MakeUnvisiable() {
+	_tex = NULL;
+	_visiable = false;
+}
+
+bool Icons::IsVisiable() {
+	return _visiable;
 }
