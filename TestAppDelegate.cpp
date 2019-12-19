@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TestAppDelegate.h"
 #include "TestWidget.h"
-
+#include "ButtonWidget.h"
 enum {
 	WINDOW_WIDTH = 640,
 	WINDOW_HEIGHT = 960
@@ -35,6 +35,8 @@ void TestAppDelegate::RegisterTypes()
 	// его необходимо зарегистрировать таким образом.
 	//
 	REGISTER_WIDGET_XML(TestWidget, "TestWidget");
+	REGISTER_WIDGET_XML(ButtonWidget, "ButtonWidget");
+
 }
 
 void TestAppDelegate::LoadResources()
