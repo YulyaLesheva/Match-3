@@ -7,11 +7,11 @@
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
-	col(4),
-	row(4),
+	_col(4),
+	_row(4),
 	_iconsSide(256 * .625),
-	x(0),
-	y(0)
+	_x(0),
+	_y(0)
 {
 	Init();
 }
@@ -19,26 +19,7 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 void TestWidget::Init() {
 	
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-
-	while (true) {
-		testRow = 0;
-		x = 0;
-		y = 960 - 256 * .625;
-		for (int r = 0; r < row; r++) {
-			x = 0;
-			y -= _iconsSide;
-			for (int c = 0; c < col; c++) {
-				GameField[r][c] = SetRandomIcon(IPoint(x, y));
-				GameField[r][c]->SetCol(c);
-				GameField[r][c]->SetRow(r);
-				x += _iconsSide;
-			}
-		}
-		if (!LookForMatches().empty()) continue;
-		if (LookForPossibles() == false) continue;
-
-		break;
-	}
+	CreateGameField();
 	
 	/*
 	x = 0;
@@ -67,17 +48,36 @@ void TestWidget::Init() {
 	GameField[3][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("bread"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 5));
 	GameField[3][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 5));
 	*/
-	bool check =false;
-	auto v = LookForMatches();
-	check = LookForPossibles();
 	
+	
+}
+void TestWidget::CreateGameField() {
+	
+	while (true) {
+		_x = 0;
+		_y = 960 - 256 * .625;
+		for (int r = 0; r < _row; r++) {
+			_x = 0;
+			_y -= _iconsSide;
+			for (int c = 0; c < _col; c++) {
+				GameField[r][c] = SetRandomIcon(IPoint(_x, _y));
+				GameField[r][c]->SetCol(c);
+				GameField[r][c]->SetRow(r);
+				_x += _iconsSide;
+			}
+		}
+		if (!LookForMatches().empty()) continue;
+		if (LookForPossibles() == false) continue;
+
+		break;
+	}
 }
 
 std::vector<std::shared_ptr<Icons>> TestWidget::VerticMatches(int rows, int cols) {
 	
 	std::vector<std::shared_ptr<Icons>> vector;
-
 	vector.push_back(GameField[rows][cols]);
+
 	for (int i = 1; rows + i < 4; i++) {
 		if (vector.back()->GetTexture() == GameField[rows+i][cols]->GetTexture()) {
 			vector.push_back(GameField[rows+i][cols]);
@@ -87,12 +87,11 @@ std::vector<std::shared_ptr<Icons>> TestWidget::VerticMatches(int rows, int cols
 	return vector;
 }
 
-
 std::vector<std::shared_ptr<Icons>> TestWidget::HorizMatches(int rows, int cols) {
 	
 	std::vector<std::shared_ptr<Icons>> vector;
-
 	vector.push_back(GameField[rows][cols]);
+
 	for (int i = 1; cols + i < 4; i++) {
 		if (vector.back()->GetTexture() == GameField[rows][cols+i]->GetTexture()) {
 			vector.push_back(GameField[rows][cols + i]);
@@ -212,8 +211,8 @@ std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 
 void TestWidget::Draw() {
 	_background->Draw();
-	for (int r = 0; r < row; r++) {
-		for (int c = 0; c < col; c++) {
+	for (int r = 0; r < _row; r++) {
+		for (int c = 0; c < _col; c++) {
 			GameField[r][c]->Draw();
 		}
 	}
@@ -221,7 +220,7 @@ void TestWidget::Draw() {
 
 void TestWidget::Update(float dt) {
 	
-	if (savedTiles.size()==2) {
+	if (_savedTiles.size()==2) {
 		CheckNeighbors();
 	}
 
@@ -237,41 +236,41 @@ void TestWidget::Update(float dt) {
 
 bool TestWidget::CheckNeighbors() {
 
-	if (savedTiles.front()->ReturnRow()==savedTiles.back()->ReturnRow() && savedTiles.front()->ReturnCol()==savedTiles.back()->ReturnCol()) {
-		for (auto &t : savedTiles) {
+	if (_savedTiles.front()->ReturnRow()==_savedTiles.back()->ReturnRow() && _savedTiles.front()->ReturnCol()==_savedTiles.back()->ReturnCol()) {
+		for (auto &t : _savedTiles) {
 			t->DisableLigth();
 			t->MarkOff();
 		}
-		savedTiles.clear();
+		_savedTiles.clear();
 		return true;
 	}
 	
-	 else if (savedTiles.front()->ReturnRow()==savedTiles.back()->ReturnRow() && abs(savedTiles.front()->ReturnCol() - savedTiles.back()->ReturnCol()) ==1) {
-		MakeSwap(savedTiles);
-		for (auto &t : savedTiles) {
+	 else if (_savedTiles.front()->ReturnRow()==_savedTiles.back()->ReturnRow() && abs(_savedTiles.front()->ReturnCol() - _savedTiles.back()->ReturnCol()) ==1) {
+		MakeSwap(_savedTiles);
+		for (auto &t : _savedTiles) {
 			t->DisableLigth();
 			t->MarkOff();
 		}
-		savedTiles.clear();
+		_savedTiles.clear();
 		return true;
 	}
 
-	 else if (savedTiles.front()->ReturnCol() == savedTiles.back()->ReturnCol() && abs(savedTiles.front()->ReturnRow() - savedTiles.back()->ReturnRow()) == 1) {
-		MakeSwap(savedTiles);
-		for (auto &t : savedTiles) {
+	 else if (_savedTiles.front()->ReturnCol() == _savedTiles.back()->ReturnCol() && abs(_savedTiles.front()->ReturnRow() - _savedTiles.back()->ReturnRow()) == 1) {
+		MakeSwap(_savedTiles);
+		for (auto &t : _savedTiles) {
 			t->DisableLigth();
 			t->MarkOff();
 		}
-		savedTiles.clear();
+		_savedTiles.clear();
 		return true;
 	}
 
 	 else {
-		for (auto &t : savedTiles) {
+		for (auto &t : _savedTiles) {
 			t->DisableLigth();
 			t->MarkOff();
 		}
-		savedTiles.clear();
+		_savedTiles.clear();
 		return true;
 	}
 	
@@ -284,7 +283,7 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos){
 		for (int c = 0; c < 4; c++) {
 			GameField[r][c]->MouseDown(mouse_pos);
 			if (GameField[r][c]->IsMarked()) {
-			savedTiles.push_back(GameField[r][c]);	
+			_savedTiles.push_back(GameField[r][c]);	
 			GameField[r][c]->MarkOff();
 			}
 		}
@@ -303,7 +302,6 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 	if(LookForMatches().empty()){
 		iconsToSwipe.front()->SetNewTexture(firstTex);
 		iconsToSwipe.back()->SetNewTexture(secondTex);
-
 	}
 }
 

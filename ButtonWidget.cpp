@@ -16,7 +16,7 @@ void ButtonWidget::Init()
 
 void ButtonWidget::Draw()
 {
-	_replayButton->Draw();
+	///_replayButton->Draw();
 }
 
 void ButtonWidget::Update(float dt)
