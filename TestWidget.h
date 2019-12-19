@@ -7,6 +7,7 @@
 
 class Background;
 class Icons;
+class Buttons;
 
 #define ptr(t) \
 std::unique_ptr<t>
@@ -34,6 +35,7 @@ private:
 	std::shared_ptr<Icons> SetRandomIcon(IPoint& position);
 private:
 	ptr(Background) _background;
+	ptr(Buttons) _replayButton;
 	std::shared_ptr<Icons> GameRow[4];
 	std::shared_ptr<Icons> GameField[4][4];
 	float x, y;
@@ -55,6 +57,8 @@ private:
 	bool CheckNeighbors();
 	std::vector<std::shared_ptr<Icons>> savedTiles;
 	void MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe);
+	void EndGame();
+	Render::Texture *replay;
 	
 	int testRow, testCol;
 

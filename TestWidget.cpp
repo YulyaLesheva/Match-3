@@ -3,6 +3,7 @@
 #include "Background.h"
 #include "Icons.h"
 #include "RandomTile.h"
+#include "Buttons.h"
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
@@ -18,7 +19,8 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 void TestWidget::Init() {
 	
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-	
+	_replayButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("closeButton"), IPoint(200, 300));
+
 	while (true) {
 		testRow = 0;
 		x = 0;
@@ -34,7 +36,6 @@ void TestWidget::Init() {
 			}
 		}
 		if (!LookForMatches().empty()) continue;
-
 		if (LookForPossibles() == false) continue;
 
 		break;
@@ -71,7 +72,6 @@ void TestWidget::Init() {
 	auto v = LookForMatches();
 	check = LookForPossibles();
 	
-
 }
 
 std::vector<std::shared_ptr<Icons>> TestWidget::VerticMatches(int rows, int cols) {
@@ -218,6 +218,8 @@ void TestWidget::Draw() {
 			GameField[r][c]->Draw();
 		}
 	}
+
+	_replayButton->Draw();
 }
 
 void TestWidget::Update(float dt) {
@@ -234,7 +236,6 @@ void TestWidget::Update(float dt) {
 		}
 	}
 	AffectAbove();
-	
 }
 
 bool TestWidget::CheckNeighbors() {
@@ -309,6 +310,9 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 	}
 }
 
+void TestWidget::EndGame() {
+	
+}
 void TestWidget::MouseMove(const IPoint &mouse_pos)
 {
 }
