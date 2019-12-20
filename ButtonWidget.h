@@ -28,6 +28,7 @@ public:
 
 private:
 	void Init();
+	ptr(Buttons) _closeButton;
 	ptr(Buttons) _replayButton;
 
 

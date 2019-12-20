@@ -19,6 +19,7 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 void TestWidget::Init() {
 	
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
+	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
 	CreateGameField();
 	
 	/*
@@ -211,6 +212,7 @@ std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 
 void TestWidget::Draw() {
 	_background->Draw();
+	_redForScore->Draw();
 	for (int r = 0; r < _row; r++) {
 		for (int c = 0; c < _col; c++) {
 			GameField[r][c]->Draw();

@@ -50,6 +50,7 @@ private:
 
 private:
 	ptr(Background) _background;
+	ptr(Background) _redForScore;
 
 	float _iconsSide;
 	float _x, _y;
