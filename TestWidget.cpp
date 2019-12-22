@@ -3,7 +3,7 @@
 #include "Background.h"
 #include "Icons.h"
 #include "RandomTile.h"
-
+#include "Score.h"
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
@@ -12,6 +12,7 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	_iconsSide(256 * .625),
 	_x(0),
 	_y(0)
+	///_score(0)
 {
 	Init();
 }
@@ -20,6 +21,7 @@ void TestWidget::Init() {
 	
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
 	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
+	_scoreTable = Score::CreateScore(IPoint(Render::device.Width()*.5, 120.f));
 	CreateGameField();
 	
 	/*
@@ -73,6 +75,7 @@ void TestWidget::CreateGameField() {
 		break;
 	}
 }
+
 
 std::vector<std::shared_ptr<Icons>> TestWidget::VerticMatches(int rows, int cols) {
 	
@@ -145,7 +148,8 @@ void TestWidget::AffectAbove() {
 			}
 		}
 	}
-	
+
+	if (!LookForPossibles()) EndGame();
 }
 
 bool TestWidget::LookForPossibles() {
@@ -211,8 +215,11 @@ std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 }
 
 void TestWidget::Draw() {
+	
 	_background->Draw();
 	_redForScore->Draw();
+	_scoreTable->Draw();
+
 	for (int r = 0; r < _row; r++) {
 		for (int c = 0; c < _col; c++) {
 			GameField[r][c]->Draw();
@@ -222,18 +229,26 @@ void TestWidget::Draw() {
 
 void TestWidget::Update(float dt) {
 	
-	if (_savedTiles.size()==2) {
+	IsAllowToMakeSwap();
+	FindRemoveAndAddNewPieces();
+}
+
+void TestWidget::IsAllowToMakeSwap() {
+	if (_savedTiles.size() == 2) {
 		CheckNeighbors();
 	}
-
+}
+void TestWidget::FindRemoveAndAddNewPieces() {
+	
 	if (!LookForMatches().empty()) {
-		auto mmmmmm = LookForMatches();
-		
-		for (auto i : mmmmmm.front()) {
+		auto findedMatches = LookForMatches();
+		_scoreTable->IncreaseScore(findedMatches.front().size());
+
+		for (auto i : findedMatches.front()) {
 			i->MakeUnvisiable();
 		}
+		AffectAbove();
 	}
-	AffectAbove();
 }
 
 bool TestWidget::CheckNeighbors() {
@@ -308,6 +323,7 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 }
 
 void TestWidget::EndGame() {
+	_scoreTable->ResetScore();
 }
 void TestWidget::MouseMove(const IPoint &mouse_pos)
 {

@@ -7,6 +7,7 @@
 
 class Background;
 class Icons;
+class Score;
 
 #define ptr(t) \
 std::unique_ptr<t>
@@ -35,6 +36,8 @@ private:
 	void MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe);
 	void EndGame();
 	void CreateGameField();
+	void FindRemoveAndAddNewPieces();
+	void IsAllowToMakeSwap();
 
 	bool LookForPossibles();
 	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
@@ -51,10 +54,12 @@ private:
 private:
 	ptr(Background) _background;
 	ptr(Background) _redForScore;
+	ptr(Score) _scoreTable;
 
 	float _iconsSide;
 	float _x, _y;
 	int _col, _row;
+	///int _score;
 	
 	std::vector<std::vector<std::shared_ptr<Icons>>*> _VectorForDelete;
 	std::vector<std::shared_ptr<Icons>> _vector;

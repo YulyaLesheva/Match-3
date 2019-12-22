@@ -11,9 +11,8 @@ ButtonWidget::ButtonWidget(const std::string& name, rapidxml::xml_node<>* elem)
 
 void ButtonWidget::Init()
 {
-	///_closeButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("closeButton"), IPoint(Render::device.Width()-60, 900));
-	_closeButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("closeButton"), IPoint(200, 800));
-	_replayButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("replayButton"), IPoint(60, 900));
+	_closeButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("closeButton"), IPoint(Render::device.Width()-128, 840));
+	_replayButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("replayButton"), IPoint(0, 840));
 }
 
 void ButtonWidget::Draw()
@@ -35,6 +34,7 @@ bool ButtonWidget::MouseDown(const IPoint &mouse_pos)
 		Core::appInstance->CloseWindow();
 		return true;
 	}
+	
 	return false;
 }
 
