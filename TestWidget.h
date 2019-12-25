@@ -38,11 +38,18 @@ private:
 	void CreateGameField();
 	void FindRemoveAndAddNewPieces();
 	void IsAllowToMakeSwap();
+	void Swapped();
+	void RestartGame();
+	void DrawGameOver();
 
 	bool LookForPossibles();
 	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
 	bool MatchType(int rows, int cols, Render::Texture *tex);
 	bool CheckNeighbors();
+	bool isGameOver;
+	bool _runAnimation;
+
+	IPoint _startPos, _finishPos;
 
 	std::vector<std::vector<std::shared_ptr<Icons>>> LookForMatches();
 	std::vector<std::shared_ptr<Icons>> VerticMatches(int rows, int cols);
@@ -54,15 +61,23 @@ private:
 private:
 	ptr(Background) _background;
 	ptr(Background) _redForScore;
+	ptr(Background) _gameOver;
 	ptr(Score) _scoreTable;
 
 	float _iconsSide;
 	float _x, _y;
 	int _col, _row;
-	///int _score;
 	
-	std::vector<std::vector<std::shared_ptr<Icons>>*> _VectorForDelete;
 	std::vector<std::shared_ptr<Icons>> _vector;
 	std::vector<std::shared_ptr<Icons>> _savedTiles;
 	std::shared_ptr<Icons> GameField[4][4];
+
+	std::vector<std::shared_ptr<Icons>> _copiedTiles;
+	IPoint _copiedFirst, _copiedSecond;
+
+
+	Render::Texture* _greenStar;
+	IPoint _starPosition;
+	IPoint firstPiece;
+	IPoint secondPiece;
 };

@@ -11,8 +11,9 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	_row(4),
 	_iconsSide(256 * .625),
 	_x(0),
-	_y(0)
-	///_score(0)
+	_y(0),
+	_starPosition(0, 0),
+	isGameOver(false)
 {
 	Init();
 }
@@ -22,7 +23,10 @@ void TestWidget::Init() {
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
 	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
 	_scoreTable = Score::CreateScore(IPoint(Render::device.Width()*.5, 120.f));
+	_gameOver = Background::Create(Core::resourceManager.Get<Render::Texture>("gameOver"), IPoint(Render::device.Width()*.5, 840));
 	CreateGameField();
+
+	_greenStar = Core::resourceManager.Get<Render::Texture>("star");
 	
 	/*
 	x = 0;
@@ -52,7 +56,11 @@ void TestWidget::Init() {
 	GameField[3][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 5));
 	*/
 	
-	
+	GameField[1][2]->AllowMoveUp();
+
+	firstPiece = GameField[0][0]->GetPosition();
+	secondPiece = GameField[0][1]->GetPosition();
+
 }
 void TestWidget::CreateGameField() {
 	
@@ -219,6 +227,11 @@ void TestWidget::Draw() {
 	_background->Draw();
 	_redForScore->Draw();
 	_scoreTable->Draw();
+	_greenStar->Draw(_starPosition);
+	
+	if (isGameOver) {
+		_gameOver->Draw();
+	}
 
 	for (int r = 0; r < _row; r++) {
 		for (int c = 0; c < _col; c++) {
@@ -227,10 +240,28 @@ void TestWidget::Draw() {
 	}
 }
 
+void TestWidget::DrawGameOver() {
+	isGameOver = true;
+}
+
 void TestWidget::Update(float dt) {
 	
 	IsAllowToMakeSwap();
 	FindRemoveAndAddNewPieces();
+
+	if (_starPosition.x <= Render::device.Width()*0.5) {
+		_starPosition.x += 2;
+
+	}
+	
+	for (int r = 0; r < 4; r++) {
+		for (int c = 0; c < 4; c++) {
+			GameField[r][c]->Update(dt);
+		}
+	}
+	//GameField[0][0]->SwipeAnimation(secondPiece);
+	//GameField[0][1]->SwipeAnimation(firstPiece);
+
 }
 
 void TestWidget::IsAllowToMakeSwap() {
@@ -251,47 +282,50 @@ void TestWidget::FindRemoveAndAddNewPieces() {
 	}
 }
 
+
 bool TestWidget::CheckNeighbors() {
 
 	if (_savedTiles.front()->ReturnRow()==_savedTiles.back()->ReturnRow() && _savedTiles.front()->ReturnCol()==_savedTiles.back()->ReturnCol()) {
-		for (auto &t : _savedTiles) {
-			t->DisableLigth();
-			t->MarkOff();
-		}
-		_savedTiles.clear();
+		MakeSwap(_savedTiles);
+		Swapped();
 		return true;
 	}
 	
 	 else if (_savedTiles.front()->ReturnRow()==_savedTiles.back()->ReturnRow() && abs(_savedTiles.front()->ReturnCol() - _savedTiles.back()->ReturnCol()) ==1) {
 		MakeSwap(_savedTiles);
-		for (auto &t : _savedTiles) {
-			t->DisableLigth();
-			t->MarkOff();
-		}
-		_savedTiles.clear();
+		Swapped();
 		return true;
 	}
 
 	 else if (_savedTiles.front()->ReturnCol() == _savedTiles.back()->ReturnCol() && abs(_savedTiles.front()->ReturnRow() - _savedTiles.back()->ReturnRow()) == 1) {
 		MakeSwap(_savedTiles);
-		for (auto &t : _savedTiles) {
-			t->DisableLigth();
-			t->MarkOff();
-		}
-		_savedTiles.clear();
+		Swapped();
 		return true;
 	}
 
 	 else {
-		for (auto &t : _savedTiles) {
-			t->DisableLigth();
-			t->MarkOff();
-		}
-		_savedTiles.clear();
+		Swapped();
 		return true;
 	}
 	
 	return false;
+}
+
+void TestWidget::Swapped() {
+
+	for (auto &t : _savedTiles) {
+		t->DisableLigth();
+		t->MarkOff();
+	}
+	_savedTiles.clear();
+}
+
+void TestWidget::RestartGame() {
+	_scoreTable->ResetScore();
+	_savedTiles.clear();
+	_vector.clear();
+	CreateGameField();
+	isGameOver = false;
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos){	
@@ -309,6 +343,7 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos){
 	return false;
 }
 
+
 void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 	auto firstTex = iconsToSwipe.front()->GetTexture();
 	auto secondTex = iconsToSwipe.back()->GetTexture();
@@ -323,8 +358,10 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 }
 
 void TestWidget::EndGame() {
-	_scoreTable->ResetScore();
+	DrawGameOver();
 }
+
+
 void TestWidget::MouseMove(const IPoint &mouse_pos)
 {
 }
@@ -333,9 +370,14 @@ void TestWidget::MouseUp(const IPoint &mouse_pos)
 {
 }
 
-void TestWidget::AcceptMessage(const Message& message)
-{
+void TestWidget::AcceptMessage(const Message& message){
 	
+	const std::string& publisher = message.getPublisher();
+	const std::string& data = message.getData();
+
+	if (data == "RestartGame") {
+		RestartGame();
+	}
 }
 
 void TestWidget::KeyPressed(int keyCode)

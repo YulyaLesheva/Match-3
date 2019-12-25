@@ -7,12 +7,20 @@ Icons::Icons(Render::Texture *tex, const IPoint &position, int row, int col) :
 	_marked(false),
 	_visiable(true),
 	_cols(col),
-	_rows(row)
+	_rows(row),
+	_initialPos(position),
+	_moveRight(false),
+	_moveLeft(false),
+	_moveUp(false),
+	_moveDown(false)
 {
 }
 
 Icons::~Icons()
 {
+}
+IPoint Icons::GetPosition() {
+	return _position;
 }
 
 std::shared_ptr<Icons> Icons::Create(Render::Texture * tex, const IPoint &position, int row, int col)
@@ -29,6 +37,50 @@ void Icons::Draw() {
 		if (_isLight) Light();
 		Render::device.PopMatrix();
 	}
+}
+
+void Icons::Update(float dt) {
+	
+	if (_moveRight) {
+		if (_position.x < (_initialPos.x +_tex->_bitmap_height * .625)) {
+			_position.x += 2;
+		}
+		
+	}
+
+	if (_moveLeft) {
+		if (_position.x >(_initialPos.x - _tex->_bitmap_height * .625)) {
+			_position.x -= 2;
+		}
+	}
+
+	if (_moveUp) {
+		if (_position.y < (_initialPos.y + _tex->_bitmap_height * .625)) {
+			_position.y += 2;
+		}
+	}
+
+	if (_moveDown) {
+		if (_position.y > (_initialPos.y - _tex->_bitmap_height * .625)) {
+			_position.y -= 2;
+		}
+	}
+}
+
+void Icons::AllowMoveRight() {
+	_moveRight = true;
+}
+
+void Icons::AllowMoveLeft() {
+	_moveLeft = true;
+}
+
+void Icons::AllowMoveUp() {
+	_moveUp = true;
+}
+
+void Icons::AllowMoveDown() {
+	_moveDown = true;
 }
 
 float Icons::GetSize() {
@@ -124,4 +176,31 @@ void Icons::MakeUnvisiable() {
 
 bool Icons::IsVisiable() {
 	return _visiable;
+}
+
+void Icons::SwipeAnimation(IPoint moveToPoint) {
+	
+	if (moveToPoint.x < _position.x) {
+		if (_position.x > moveToPoint.x) {
+			_position.x -= 4;
+		}
+	}
+
+	if (moveToPoint.x > _position.x) {
+		if (_position.x < moveToPoint.x) {
+			_position.x += 4;
+		}
+	}
+
+	if (moveToPoint.y < _position.y) {
+		if (_position.y > moveToPoint.y) {
+			_position.y -= 4;
+		}
+	}
+
+	if (moveToPoint.y > _position.y) {
+		if (_position.y < moveToPoint.y) {
+			_position.y += 4;
+		}
+	}
 }

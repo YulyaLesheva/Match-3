@@ -35,6 +35,11 @@ bool ButtonWidget::MouseDown(const IPoint &mouse_pos)
 		return true;
 	}
 	
+	if (_replayButton->GetRect().Contains(mouse_pos)) {
+		Core::guiManager.getLayer("TestLayer")->getWidget("TestWidget")->AcceptMessage(Message("RestartGame", "RestartGame"));
+		return true;
+	}
+	
 	return false;
 }
 
@@ -56,6 +61,8 @@ void ButtonWidget::AcceptMessage(const Message& message)
 
 	const std::string& publisher = message.getPublisher();
 	const std::string& data = message.getData();
+
+	
 }
 
 void ButtonWidget::KeyPressed(int keyCode)

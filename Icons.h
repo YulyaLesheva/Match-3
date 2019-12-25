@@ -7,30 +7,47 @@ public:
 	Icons(Render::Texture *tex, const IPoint &position, int row, int col);
 	~Icons();
 	static std::shared_ptr<Icons> Create(Render::Texture *tex, const IPoint &position, int row, int col);
+	Render::Texture* GetTexture();
+
 	void Draw();
 	void SetPosition(IPoint &newPosition);
-	float Icons::GetSize();
-	Render::Texture* GetTexture();
 	void SetNewTexture(Render::Texture *newTex);
-	IRect GetRect();
-	bool MouseDown(const IPoint &mouse_pos);
 	void Light();
+	void Update(float dt);
 	void MakeLigth();
-	bool IsLigth();
-	bool _isLight;
-	bool _marked;
-	bool IsMarked();
 	void Mark();
 	void MarkOff();
-	int ReturnRow();
-	int ReturnCol();
 	void DisableLigth();
 	void SetRow(int r);
+	void AllowMoveRight();
+	void AllowMoveLeft();
+	void AllowMoveUp();
+	void AllowMoveDown();
 	void SetCol(int c);
 	void ChangeRowAndCol(int newRow, int newCol);
 	void MakeUnvisiable();
-	bool _visiable;
+	void SwipeAnimation(IPoint moveToPoint);
+
+	int ReturnRow();
+	int ReturnCol();
+	
+	float Icons::GetSize();
+	
+	IRect GetRect();
+	IPoint GetPosition();
+
+	bool MouseDown(const IPoint &mouse_pos);
+	bool IsLigth();
 	bool  IsVisiable();
+	bool IsMarked();
+
+	bool _isLight;
+	bool _marked;
+	bool _visiable;
+	bool _moveRight, _moveLeft, _moveUp, _moveDown;
+	
+	IPoint _initialPos;
+
 private:
 	Render::Texture *_tex;
 	IPoint _position;
