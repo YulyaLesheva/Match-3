@@ -82,7 +82,6 @@ void TestWidget::CreateGameField() {
 	}
 }
 
-
 std::vector<std::shared_ptr<Icons>> TestWidget::VerticMatches(int rows, int cols) {
 	
 	std::vector<std::shared_ptr<Icons>> vector;
@@ -155,7 +154,7 @@ void TestWidget::AffectAbove() {
 		}
 	}
 
-	if (!LookForPossibles()) EndGame();
+	
 }
 
 bool TestWidget::LookForPossibles() {
@@ -230,6 +229,10 @@ void TestWidget::Draw() {
 			GameField[r][c]->Draw();
 		}
 	}
+
+	IPoint mouse_pos = Core::mainInput.GetMousePos();
+	Render::BindFont("Wingko");
+	Render::PrintString(IPoint(50, 50), utils::lexical_cast(mouse_pos.x) + ", " + utils::lexical_cast(mouse_pos.y));
 }
 
 void TestWidget::Update(float dt) {
@@ -249,7 +252,8 @@ void TestWidget::Update(float dt) {
 	}
 	//GameField[0][0]->SwipeAnimation(secondPiece);
 	//GameField[0][1]->SwipeAnimation(firstPiece);
-
+	
+	if (LookForPossibles() == false) EndGame();
 }
 
 void TestWidget::IsAllowToMakeSwap() {
@@ -266,6 +270,11 @@ void TestWidget::FindRemoveAndAddNewPieces() {
 		for (auto i : findedMatches.front()) {
 			i->MakeUnvisiable();
 		}
+
+		for (auto i : findedMatches.back()) {
+			i->MakeUnvisiable(); /// для двойных совпадений. нужен тест
+		}
+
 		AffectAbove();
 	}
 }
@@ -347,6 +356,7 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 
 void TestWidget::EndGame() {
 	Core::guiManager.getLayer("BgLayer")->getWidget("BackgroundWidget")->AcceptMessage(Message("EndGame", "EndGame"));
+
 }
 
 

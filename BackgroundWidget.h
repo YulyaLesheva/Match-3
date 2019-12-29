@@ -33,7 +33,10 @@ private:
 	ptr(Background) _background;
 	ptr(Background) _redForScore;
 	ptr(Background) _gameOver;
+	ptr(Background) _fone;
+	ptr(Background) _notebook;
 
 	bool isGameOver;
+	
 
 };
