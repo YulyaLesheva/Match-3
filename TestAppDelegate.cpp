@@ -2,6 +2,8 @@
 #include "TestAppDelegate.h"
 #include "TestWidget.h"
 #include "ButtonWidget.h"
+#include "BackgroundWidget.h"
+
 enum {
 	WINDOW_WIDTH = 640,
 	WINDOW_HEIGHT = 960
@@ -34,6 +36,7 @@ void TestAppDelegate::RegisterTypes()
 	// Чтобы можно было декларативно использовать виджет в xml по имени,
 	// его необходимо зарегистрировать таким образом.
 	//
+	REGISTER_WIDGET_XML(BackgroundnWidget, "BackgroundWidget");
 	REGISTER_WIDGET_XML(TestWidget, "TestWidget");
 	REGISTER_WIDGET_XML(ButtonWidget, "ButtonWidget");
 

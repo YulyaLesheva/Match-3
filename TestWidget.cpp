@@ -12,18 +12,16 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	_iconsSide(256 * .625),
 	_x(0),
 	_y(0),
-	_starPosition(0, 0),
-	isGameOver(false)
+	_starPosition(0, 0)
+	
 {
 	Init();
 }
 
 void TestWidget::Init() {
 	
-	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
+	
 	_scoreTable = Score::CreateScore(IPoint(Render::device.Width()*.5, 120.f));
-	_gameOver = Background::Create(Core::resourceManager.Get<Render::Texture>("gameOver"), IPoint(Render::device.Width()*.5, 840));
 	CreateGameField();
 
 	_greenStar = Core::resourceManager.Get<Render::Texture>("star");
@@ -56,7 +54,7 @@ void TestWidget::Init() {
 	GameField[3][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 5));
 	*/
 	
-	GameField[1][2]->AllowMoveUp();
+	//GameField[1][2]->AllowMoveUp();
 
 	firstPiece = GameField[0][0]->GetPosition();
 	secondPiece = GameField[0][1]->GetPosition();
@@ -224,24 +222,14 @@ std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 
 void TestWidget::Draw() {
 	
-	_background->Draw();
-	_redForScore->Draw();
 	_scoreTable->Draw();
 	_greenStar->Draw(_starPosition);
 	
-	if (isGameOver) {
-		_gameOver->Draw();
-	}
-
 	for (int r = 0; r < _row; r++) {
 		for (int c = 0; c < _col; c++) {
 			GameField[r][c]->Draw();
 		}
 	}
-}
-
-void TestWidget::DrawGameOver() {
-	isGameOver = true;
 }
 
 void TestWidget::Update(float dt) {
@@ -325,7 +313,7 @@ void TestWidget::RestartGame() {
 	_savedTiles.clear();
 	_vector.clear();
 	CreateGameField();
-	isGameOver = false;
+	Core::guiManager.getLayer("BgLayer")->getWidget("BackgroundWidget")->AcceptMessage(Message("RestartGame", "RestartGame"));
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos){	
@@ -358,7 +346,7 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 }
 
 void TestWidget::EndGame() {
-	DrawGameOver();
+	Core::guiManager.getLayer("BgLayer")->getWidget("BackgroundWidget")->AcceptMessage(Message("EndGame", "EndGame"));
 }
 
 

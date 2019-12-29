@@ -40,13 +40,12 @@ private:
 	void IsAllowToMakeSwap();
 	void Swapped();
 	void RestartGame();
-	void DrawGameOver();
+
 
 	bool LookForPossibles();
 	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
 	bool MatchType(int rows, int cols, Render::Texture *tex);
 	bool CheckNeighbors();
-	bool isGameOver;
 	bool _runAnimation;
 
 	IPoint _startPos, _finishPos;
@@ -59,9 +58,7 @@ private:
 	
 
 private:
-	ptr(Background) _background;
-	ptr(Background) _redForScore;
-	ptr(Background) _gameOver;
+	
 	ptr(Score) _scoreTable;
 
 	float _iconsSide;
