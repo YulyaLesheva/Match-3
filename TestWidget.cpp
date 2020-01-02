@@ -226,7 +226,7 @@ void TestWidget::Draw() {
 	
 	for (int r = 0; r < _row; r++) {
 		for (int c = 0; c < _col; c++) {
-			GameField[r][c]->Draw();
+		//	GameField[r][c]->Draw();
 		}
 	}
 
@@ -253,7 +253,20 @@ void TestWidget::Update(float dt) {
 	//GameField[0][0]->SwipeAnimation(secondPiece);
 	//GameField[0][1]->SwipeAnimation(firstPiece);
 	
-	if (LookForPossibles() == false) EndGame();
+
+	if (LookForPossibles() == false && LookForMatches().empty()) EndGame();
+}
+
+bool TestWidget::AllField() {
+	for (int i = 0; i < 4;i++) {
+		for (int j = 0; j < 4; j++) {
+			auto tex = GameField[i][j]->GetTexture();
+			if (tex == NULL) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 void TestWidget::IsAllowToMakeSwap() {
@@ -267,13 +280,21 @@ void TestWidget::FindRemoveAndAddNewPieces() {
 		auto findedMatches = LookForMatches();
 		_scoreTable->IncreaseScore(findedMatches.front().size());
 
+		if (findedMatches.size() > 1) {
+			_scoreTable->IncreaseScore(findedMatches.back().size());
+
+		}
+
 		for (auto i : findedMatches.front()) {
 			i->MakeUnvisiable();
 		}
 
-		for (auto i : findedMatches.back()) {
-			i->MakeUnvisiable(); /// для двойных совпадений. нужен тест
+		if (findedMatches.size()>1) {
+			for (auto i : findedMatches.back()) {
+				i->MakeUnvisiable(); /// для двойных совпадений. нужен тест
+			}
 		}
+		
 
 		AffectAbove();
 	}

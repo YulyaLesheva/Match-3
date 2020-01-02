@@ -4,7 +4,8 @@
 
 Background::Background(Render::Texture *tex, const IPoint &position) :
 	_tex(tex),
-	_position(position)
+	_position(position),
+	_needToScale(false)
 {
 }
 
@@ -13,13 +14,22 @@ Background::~Background()
 }
 
 
-void Background::Draw(){
+void Background::Draw() {
 
 	Render::device.PushMatrix();
+	
 	Render::device.MatrixTranslate(_position);
 	Render::device.MatrixTranslate(-_tex->_rect_width * 0.5f, -_tex->_rect_height * 0.5f, 0);
 	_tex->Draw();
 	Render::device.PopMatrix();
+}
+
+void Background::Scale() {
+	_needToScale = true;
+}
+
+IPoint Background::GetPosition() {
+	return _position;
 }
 
 void Background::Update(float dt) {

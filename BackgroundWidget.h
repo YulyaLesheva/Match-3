@@ -35,6 +35,7 @@ private:
 	ptr(Background) _gameOver;
 	ptr(Background) _fone;
 	ptr(Background) _notebook;
+	ptr(Background) _yellowForReplay;
 
 	bool isGameOver;
 	

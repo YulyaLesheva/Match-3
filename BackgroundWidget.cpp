@@ -16,7 +16,8 @@ void BackgroundnWidget::Init()
 	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
 	_gameOver = Background::Create(Core::resourceManager.Get<Render::Texture>("gameOver"), IPoint(Render::device.Width()*.5, 840));
 	_fone = Background::Create(Core::resourceManager.Get<Render::Texture>("fone"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-	_notebook = Background::Create(Core::resourceManager.Get<Render::Texture>("notebook"), IPoint(350, 350));
+	_notebook = Background::Create(Core::resourceManager.Get<Render::Texture>("notebook"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
+	_yellowForReplay = Background::Create(Core::resourceManager.Get<Render::Texture>("yellowForReplay"), IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y/1.4));
 }
 
 void BackgroundnWidget::Draw()
@@ -28,10 +29,11 @@ void BackgroundnWidget::Draw()
 	_fone->Draw();
 	_redForScore->Draw();
 	
-	if (isGameOver) {
+	//if (isGameOver) {
+		//_notebook->Scale();
 		_notebook->Draw();
-	}
-	
+//}
+		_yellowForReplay->Draw();
 }
 
 void BackgroundnWidget::Update(float dt)

@@ -46,6 +46,7 @@ private:
 	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
 	bool MatchType(int rows, int cols, Render::Texture *tex);
 	bool CheckNeighbors();
+	bool AllField();
 	bool _runAnimation;
 
 	IPoint _startPos, _finishPos;
