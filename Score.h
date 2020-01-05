@@ -11,7 +11,6 @@ public:
 	void Update(float dt);
 	void IncreaseScore(int size);
 	void ResetScore();
-	int GetCurrentScore();
 
 private:
 	IPoint _position;

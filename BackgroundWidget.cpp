@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BackgroundWidget.h"
 #include "Background.h"
+#include "TextLabels.h"
 
 BackgroundnWidget::BackgroundnWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
@@ -18,6 +19,8 @@ void BackgroundnWidget::Init()
 	_fone = Background::Create(Core::resourceManager.Get<Render::Texture>("fone"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
 	_notebook = Background::Create(Core::resourceManager.Get<Render::Texture>("notebook"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
 	_yellowForReplay = Background::Create(Core::resourceManager.Get<Render::Texture>("yellowForReplay"), IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y/1.4));
+	_yourScore = TextLabels::CreateTextLabel(IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y+120),"your score:");
+	_bestScore = TextLabels::CreateTextLabel(IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y - 120), "best score:");
 }
 
 void BackgroundnWidget::Draw()
@@ -33,7 +36,8 @@ void BackgroundnWidget::Draw()
 		//_notebook->Scale();
 		_notebook->Draw();
 //}
-		_yellowForReplay->Draw();
+		_yourScore->Draw();
+		_bestScore->Draw();
 }
 
 void BackgroundnWidget::Update(float dt)

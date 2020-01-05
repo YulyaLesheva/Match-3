@@ -5,6 +5,7 @@
 /// Он отрисовывает себя, а также может содержать другие виджеты.
 ///
 class Background;
+class TextLabels;
 
 #define ptr(t) \
 std::unique_ptr<t>
@@ -36,7 +37,8 @@ private:
 	ptr(Background) _fone;
 	ptr(Background) _notebook;
 	ptr(Background) _yellowForReplay;
-
+	ptr(TextLabels) _yourScore;
+	ptr(TextLabels) _bestScore;
 	bool isGameOver;
 	
 
