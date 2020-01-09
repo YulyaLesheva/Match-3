@@ -19,15 +19,10 @@ public:
 	void MarkOff();
 	void DisableLigth();
 	void SetRow(int r);
-	void AllowMoveRight();
-	void AllowMoveLeft();
-	void AllowMoveUp();
-	void AllowMoveDown();
 	void SetCol(int c);
 	void ChangeRowAndCol(int newRow, int newCol);
 	void MakeUnvisiable();
-	void SwipeAnimation(IPoint moveToPoint);
-
+	void SetTrans();
 	int ReturnRow();
 	int ReturnCol();
 	
@@ -44,10 +39,12 @@ public:
 	bool _isLight;
 	bool _marked;
 	bool _visiable;
-	bool _moveRight, _moveLeft, _moveUp, _moveDown;
+	bool _needToTrans;
 	
 	IPoint _initialPos;
 
+	void Trans();
+	
 private:
 	Render::Texture *_tex;
 	IPoint _position;

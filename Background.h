@@ -9,6 +9,7 @@ public:
 	void Update(float dt);
 	void Scale();
 	IPoint GetPosition();
+	void SetPosition(IPoint position);
 
 	bool _needToScale;
 	static std::unique_ptr<Background> Create(Render::Texture *tex, const IPoint &position);

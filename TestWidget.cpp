@@ -12,7 +12,8 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	_iconsSide(256 * .625),
 	_x(0),
 	_y(0),
-	_starPosition(0, 0)
+	_starPosition(0, 0), 
+	_endGame(false)
 	
 {
 	Init();
@@ -25,7 +26,7 @@ void TestWidget::Init() {
 	CreateGameField();
 
 	_greenStar = Core::resourceManager.Get<Render::Texture>("star");
-	
+
 	/*
 	x = 0;
 	y = 0;
@@ -220,16 +221,17 @@ std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 }
 
 void TestWidget::Draw() {
-	
-	_scoreTable->Draw();
-	_greenStar->Draw(_starPosition);
-	
-	for (int r = 0; r < _row; r++) {
-		for (int c = 0; c < _col; c++) {
-		//	GameField[r][c]->Draw();
-		}
+
+	if (!_endGame) {
+		_scoreTable->Draw();
 	}
 
+	for (int r = 0; r < _row; r++) {
+		for (int c = 0; c < _col; c++) {
+			GameField[r][c]->Draw();
+		}
+	}
+	
 	IPoint mouse_pos = Core::mainInput.GetMousePos();
 	Render::BindFont("Wingko");
 	Render::PrintString(IPoint(50, 50), utils::lexical_cast(mouse_pos.x) + ", " + utils::lexical_cast(mouse_pos.y));
@@ -294,7 +296,6 @@ void TestWidget::FindRemoveAndAddNewPieces() {
 				i->MakeUnvisiable(); /// для двойных совпадений. нужен тест
 			}
 		}
-		
 
 		AffectAbove();
 	}
@@ -343,10 +344,14 @@ void TestWidget::RestartGame() {
 	_savedTiles.clear();
 	_vector.clear();
 	CreateGameField();
-	Core::guiManager.getLayer("BgLayer")->getWidget("BackgroundWidget")->AcceptMessage(Message("RestartGame", "RestartGame"));
+	_endGame = false;
+	_scoreTable->SetPosition(IPoint(Render::device.Width()*.5, 120.f));
+	Core::guiManager.getLayer("TestLayer")->getWidget("EndGameWidget")->AcceptMessage(Message("RestartGame", std::to_string(_scoreTable->ReturnScore())));
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos){	
+	
+	if (_endGame) return false;
 
 	for (int r = 0; r < 4; r++) {
 		for (int c = 0; c < 4; c++) {
@@ -376,10 +381,19 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 }
 
 void TestWidget::EndGame() {
-	Core::guiManager.getLayer("BgLayer")->getWidget("BackgroundWidget")->AcceptMessage(Message("EndGame", "EndGame"));
-
+	Core::guiManager.getLayer("TestLayer")->getWidget("EndGameWidget")->AcceptMessage(Message("EndGame", std::to_string(_scoreTable->ReturnScore())));
+	//_scoreTable->SetPosition(IPoint(Render::device.Width()*.5, 525));
+	_endGame = true;
+	BlurIcons();
 }
 
+void TestWidget::BlurIcons() {
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			GameField[i][j]->Trans();
+		}
+	}
+}
 
 void TestWidget::MouseMove(const IPoint &mouse_pos)
 {

@@ -17,9 +17,8 @@ Buttons::~Buttons(){
 void Buttons::Draw(){
 	Render::device.PushMatrix();
 	Render::device.MatrixTranslate(_position);
-	//Render::device.MatrixTranslate(-_tex->_rect_width * 0.5f, -_tex->_rect_height * 0.5f, 0);
+	Render::device.MatrixTranslate(-_tex->_rect_width * 0.5f, -_tex->_rect_height * 0.5f, 0);
 	_tex->Draw();
-	if (_isLight) Light();
 	Render::device.PopMatrix();
 }
 
@@ -32,7 +31,7 @@ IRect Buttons::GetRect() {
 	
 	if (_tex != NULL) {
 		auto rect = _tex->getBitmapRect();
-		_rect = IRect(_position, rect.Width(), rect.Height());
+		_rect = IRect(IRect(_position.x - rect.width * 0.5f, _position.y - rect.height * 0.5f, rect.width, rect.height));
 	}
 	return _rect;
 }

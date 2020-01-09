@@ -25,3 +25,15 @@ void Score::IncreaseScore(int size){
 void Score::ResetScore() {
 	_score = 0;
 }
+
+void Score::SetPosition(IPoint position) {
+	_position = position;
+}
+
+int Score::ReturnScore() {
+	return _score;
+}
+
+void Score::SetScore(int score) {
+	_score = score;
+}

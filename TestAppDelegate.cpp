@@ -3,6 +3,7 @@
 #include "TestWidget.h"
 #include "ButtonWidget.h"
 #include "BackgroundWidget.h"
+#include "EndGameWidget.h"
 
 enum {
 	WINDOW_WIDTH = 640,
@@ -39,7 +40,7 @@ void TestAppDelegate::RegisterTypes()
 	REGISTER_WIDGET_XML(BackgroundnWidget, "BackgroundWidget");
 	REGISTER_WIDGET_XML(TestWidget, "TestWidget");
 	REGISTER_WIDGET_XML(ButtonWidget, "ButtonWidget");
-
+	REGISTER_WIDGET_XML(EndGameWidget, "EndGameWidget");
 }
 
 void TestAppDelegate::LoadResources()

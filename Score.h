@@ -11,9 +11,12 @@ public:
 	void Update(float dt);
 	void IncreaseScore(int size);
 	void ResetScore();
-
+	void SetPosition(IPoint position);
+	int ReturnScore();
+	void SetScore(int score);
+	int _score;
 private:
 	IPoint _position;
-	int _score;
+	
 	float eventTimer;
 };

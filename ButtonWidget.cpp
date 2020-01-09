@@ -11,8 +11,8 @@ ButtonWidget::ButtonWidget(const std::string& name, rapidxml::xml_node<>* elem)
 
 void ButtonWidget::Init()
 {
-	_closeButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("closeButton"), IPoint(Render::device.Width()-128, 840));
-	_replayButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("replayButton"), IPoint(0, 840));
+	_closeButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("closeButton"), IPoint(Render::device.Width()-50, 900));
+	_replayButton = Buttons::Create(Core::resourceManager.Get<Render::Texture>("replayButton"), IPoint(50, 900));
 }
 
 void ButtonWidget::Draw()

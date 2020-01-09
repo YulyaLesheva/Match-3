@@ -1,25 +1,24 @@
 #pragma once
 
-///
-/// Виджет - основной визуальный элемент на экране.
-/// Он отрисовывает себя, а также может содержать другие виджеты.
-///
-class Background;
-class TextLabels;
 
 #define ptr(t) \
 std::unique_ptr<t>
 
-class BackgroundnWidget : public GUI::Widget
+class Background;
+class TextLabels;
+class Buttons;
+class Score;
+
+class EndGameWidget : public GUI::Widget
 {
 public:
-	BackgroundnWidget(const std::string& name, rapidxml::xml_node<>* elem);
+	EndGameWidget(const std::string& name, rapidxml::xml_node<>* elem);
 
 	void Draw() override;
 	void Update(float dt) override;
-	
+
 	void AcceptMessage(const Message& message) override;
-	
+
 	bool MouseDown(const IPoint& mouse_pos) override;
 	void MouseMove(const IPoint& mouse_pos) override;
 	void MouseUp(const IPoint& mouse_pos) override;
@@ -27,12 +26,20 @@ public:
 	void KeyPressed(int keyCode) override;
 	void CharPressed(int unicodeChar) override;
 	void RestartGame();
+	void EndGame();
 
 private:
 	void Init();
 
 private:
-	ptr(Background) _background;
-	ptr(Background) _fone;
-	ptr(Background) _someShit;
+	ptr(Background) _redForScore;
+	ptr(Background) _gameOver;
+	ptr(Background) _notebook;
+	ptr(Buttons) _yellowForReplay;
+	ptr(TextLabels) _yourScore;
+	ptr(TextLabels) _bestScore;
+	ptr(Background) _whiteForBestScore;
+	ptr(Score) _finalScore;
+
+	bool isGameOver;
 };

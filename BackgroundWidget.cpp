@@ -4,8 +4,7 @@
 #include "TextLabels.h"
 
 BackgroundnWidget::BackgroundnWidget(const std::string& name, rapidxml::xml_node<>* elem)
-	: Widget(name),
-	isGameOver(false)
+	: Widget(name)
 
 {
 	Init();
@@ -14,35 +13,23 @@ BackgroundnWidget::BackgroundnWidget(const std::string& name, rapidxml::xml_node
 void BackgroundnWidget::Init()
 {
 	_background = Background::Create(Core::resourceManager.Get<Render::Texture>("bg"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
-	_gameOver = Background::Create(Core::resourceManager.Get<Render::Texture>("gameOver"), IPoint(Render::device.Width()*.5, 840));
 	_fone = Background::Create(Core::resourceManager.Get<Render::Texture>("fone"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-	_notebook = Background::Create(Core::resourceManager.Get<Render::Texture>("notebook"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
-	_yellowForReplay = Background::Create(Core::resourceManager.Get<Render::Texture>("yellowForReplay"), IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y/1.4));
-	_yourScore = TextLabels::CreateTextLabel(IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y+120),"your score:");
-	_bestScore = TextLabels::CreateTextLabel(IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y - 120), "best score:");
+	
+	//_someShit = Background::Create(Core::resourceManager.Get<Render::Texture>("milk"), IPoint(435, 200));
 }
 
 void BackgroundnWidget::Draw()
 {
 	_background->Draw();
-	if (isGameOver) {
-		_gameOver->Draw();
-	}
 	_fone->Draw();
-	_redForScore->Draw();
-	
-	//if (isGameOver) {
-		//_notebook->Scale();
-		_notebook->Draw();
-//}
-		_yourScore->Draw();
-		_bestScore->Draw();
 }
+
+	//Render::BeginAlphaMul(0.5);
+	//_someShit->Draw();
+	//Render::EndAlphaMul();
 
 void BackgroundnWidget::Update(float dt)
 {
-	
 }
 
 bool BackgroundnWidget::MouseDown(const IPoint &mouse_pos)
@@ -67,16 +54,9 @@ void BackgroundnWidget::AcceptMessage(const Message& message)
 	// Виджету могут посылаться сообщения с параметрами.
 	//
 
-	const std::string& publisher = message.getPublisher();
-	const std::string& data = message.getData();
+}
 
-	if (data == "EndGame") {
-		isGameOver = true;
-	}
-
-	if (data == "RestartGame") {
-		isGameOver = false;
-	}
+void BackgroundnWidget::RestartGame() {
 }
 
 void BackgroundnWidget::KeyPressed(int keyCode)

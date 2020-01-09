@@ -40,7 +40,7 @@ private:
 	void IsAllowToMakeSwap();
 	void Swapped();
 	void RestartGame();
-
+	void BlurIcons();
 
 	bool LookForPossibles();
 	bool MatchPattern(int rows, int cols, int mustHave[], std::vector<std::vector<int>> myVectorNeedOne);
@@ -48,6 +48,7 @@ private:
 	bool CheckNeighbors();
 	bool AllField();
 	bool _runAnimation;
+	bool _endGame;
 
 	IPoint _startPos, _finishPos;
 
@@ -78,4 +79,5 @@ private:
 	IPoint _starPosition;
 	IPoint firstPiece;
 	IPoint secondPiece;
+
 };
