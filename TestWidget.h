@@ -74,10 +74,4 @@ private:
 	std::vector<std::shared_ptr<Icons>> _copiedTiles;
 	IPoint _copiedFirst, _copiedSecond;
 
-
-	Render::Texture* _greenStar;
-	IPoint _starPosition;
-	IPoint firstPiece;
-	IPoint secondPiece;
-
 };

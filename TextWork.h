@@ -22,11 +22,4 @@ namespace UseTextWork {
 			write->Write(done, length);
 		}
 	}
-
-	char* ReturnBestScoreForPrint() {
-		auto bs = GetBestScore();
-		char str[10];
-		auto done1 = itoa(bs, str, 10);
-		return done1;
-	}
 }

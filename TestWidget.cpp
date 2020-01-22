@@ -12,7 +12,6 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	_iconsSide(256 * .625),
 	_x(0),
 	_y(0),
-	_starPosition(0, 0), 
 	_endGame(false)
 	
 {
@@ -20,47 +19,9 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 }
 
 void TestWidget::Init() {
-	
-	
+
 	_scoreTable = Score::CreateScore(IPoint(Render::device.Width()*.5, 120.f));
 	CreateGameField();
-
-	_greenStar = Core::resourceManager.Get<Render::Texture>("star");
-	
-	
-	/*
-	x = 0;
-	y = 0;
-
-	GameField[0][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("milk"), IPoint(0, 960 - _iconsSide * 2));
-	GameField[0][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 2));
-	GameField[0][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("orange"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 2));
-	GameField[0][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("bread"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 2));
-
-
-	GameField[1][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(0, 960 - _iconsSide * 3));
-	GameField[1][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 3));
-	GameField[1][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 3));
-	GameField[1][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("cocos"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 3));
-
-
-	GameField[2][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("cocos"), IPoint(0, 960 - _iconsSide * 4));
-	GameField[2][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("apple"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 4));
-	GameField[2][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 4));
-	GameField[2][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("bread"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 4));
-
-
-	GameField[3][0] = Icons::Create(Core::resourceManager.Get<Render::Texture>("flower"), IPoint(0, 960 - _iconsSide * 5));
-	GameField[3][1] = Icons::Create(Core::resourceManager.Get<Render::Texture>("orange"), IPoint(x + _iconsSide * 1, 960 - _iconsSide * 5));
-	GameField[3][2] = Icons::Create(Core::resourceManager.Get<Render::Texture>("bread"), IPoint(x + _iconsSide * 2, 960 - _iconsSide * 5));
-	GameField[3][3] = Icons::Create(Core::resourceManager.Get<Render::Texture>("brokkoli"), IPoint(x + _iconsSide * 3, 960 - _iconsSide * 5));
-	*/
-	
-	//GameField[1][2]->AllowMoveUp();
-
-	firstPiece = GameField[0][0]->GetPosition();
-	secondPiece = GameField[0][1]->GetPosition();
-
 }
 void TestWidget::CreateGameField() {
 	
@@ -155,8 +116,6 @@ void TestWidget::AffectAbove() {
 			}
 		}
 	}
-
-	
 }
 
 bool TestWidget::LookForPossibles() {
@@ -231,9 +190,10 @@ void TestWidget::Draw() {
 		}
 	}
 	
-	IPoint mouse_pos = Core::mainInput.GetMousePos();
+	/*IPoint mouse_pos = Core::mainInput.GetMousePos();
 	Render::BindFont("Wingko");
 	Render::PrintString(IPoint(50, 50), utils::lexical_cast(mouse_pos.x) + ", " + utils::lexical_cast(mouse_pos.y));
+	*/
 }
 
 void TestWidget::Update(float dt) {
@@ -241,19 +201,11 @@ void TestWidget::Update(float dt) {
 	IsAllowToMakeSwap();
 	FindRemoveAndAddNewPieces();
 
-	if (_starPosition.x <= Render::device.Width()*0.5) {
-		_starPosition.x += 2;
-
-	}
-	
 	for (int r = 0; r < 4; r++) {
 		for (int c = 0; c < 4; c++) {
 			GameField[r][c]->Update(dt);
 		}
 	}
-	//GameField[0][0]->SwipeAnimation(secondPiece);
-	//GameField[0][1]->SwipeAnimation(firstPiece);
-	
 
 	if (LookForPossibles() == false && LookForMatches().empty()) EndGame();
 }
@@ -381,7 +333,6 @@ void TestWidget::MakeSwap(std::vector<std::shared_ptr<Icons>> iconsToSwipe) {
 
 void TestWidget::EndGame() {
 	Core::guiManager.getLayer("TestLayer")->getWidget("EndGameWidget")->AcceptMessage(Message("EndGame", std::to_string(_scoreTable->ReturnScore())));
-	//_scoreTable->SetPosition(IPoint(Render::device.Width()*.5, 525));
 	_endGame = true;
 	BlurIcons();
 }

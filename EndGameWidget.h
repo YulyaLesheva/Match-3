@@ -27,7 +27,7 @@ public:
 	void CharPressed(int unicodeChar) override;
 	void RestartGame();
 	void EndGame();
-	void PrintBestScore();
+	void WriteAndCheckBestScore(std::string data);
 
 private:
 	void Init();
@@ -41,6 +41,7 @@ private:
 	ptr(TextLabels) _bestScore;
 	ptr(Background) _whiteForBestScore;
 	ptr(Score) _finalScore;
+	ptr(Score) _greatBestScore;
 	ptr(TextLabels) _bestScoreNum;
 
 	char* texto;

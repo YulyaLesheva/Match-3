@@ -15,7 +15,6 @@ EndGameWidget::EndGameWidget(const std::string& name, rapidxml::xml_node<>* elem
 }
 
 void EndGameWidget::Init() {
-	auto texto = UseTextWork::ReturnBestScoreForPrint();
 
 	_gameOver = Background::Create(Core::resourceManager.Get<Render::Texture>("gameOver"), IPoint(Render::device.Width()*.5, 840));
 	_notebook = Background::Create(Core::resourceManager.Get<Render::Texture>("notebook"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
@@ -25,7 +24,7 @@ void EndGameWidget::Init() {
 	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
 	_whiteForBestScore = Background::Create(Core::resourceManager.Get<Render::Texture>("whiteForBestScore"), IPoint(435, _notebook->GetPosition().y - 162));
 	_finalScore = Score::CreateScore(IPoint(Render::device.Width()*.5, 525));
-	_bestScoreNum = TextLabels::CreateTextLabel(IPoint(300, 50), "lllll", 255, 128, 0);
+	_greatBestScore = Score::CreateScore(IPoint(_whiteForBestScore->GetPosition().x+3, _whiteForBestScore->GetPosition().y+23), 255, 40, 40);
 }
 
 void EndGameWidget::Draw() {
@@ -40,11 +39,11 @@ void EndGameWidget::Draw() {
 		_bestScore->Draw();
 		_whiteForBestScore->Draw();
 		_redForScore->Draw();
-		_bestScoreNum->Draw();
 	}
 	
 	if (isGameOver) {
 		_finalScore->Draw();
+		_greatBestScore->Draw();
 	}
 	
 
@@ -60,7 +59,7 @@ void EndGameWidget::AcceptMessage(const Message& message) {
 
 	if (publisher == "EndGame") {
 		_finalScore->SetScore(std::stoi(data));
-		UseTextWork::WriteNewBestScore(std::stoi(data));
+		WriteAndCheckBestScore(data);
 		EndGame();
 	}
 
@@ -68,6 +67,12 @@ void EndGameWidget::AcceptMessage(const Message& message) {
 		RestartGame();
 	}
 }
+
+void EndGameWidget::WriteAndCheckBestScore(std::string data) {
+	UseTextWork::WriteNewBestScore(std::stoi(data));
+	_greatBestScore->SetScore(UseTextWork::GetBestScore());
+}
+
 void EndGameWidget::EndGame() {
 	isGameOver = true;
 	_redForScore->SetPosition(IPoint(Render::device.Width()*.5, 500));
@@ -83,9 +88,7 @@ bool EndGameWidget::MouseDown(const IPoint& mouse_pos) {
 	
 	return false;
 }
-void EndGameWidget::PrintBestScore() {
-	
-}
+
 void EndGameWidget::MouseMove(const IPoint& mouse_pos) {
 
 }
