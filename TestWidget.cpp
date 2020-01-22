@@ -26,7 +26,8 @@ void TestWidget::Init() {
 	CreateGameField();
 
 	_greenStar = Core::resourceManager.Get<Render::Texture>("star");
-
+	
+	
 	/*
 	x = 0;
 	y = 0;
@@ -222,9 +223,7 @@ std::shared_ptr<Icons> TestWidget::SetRandomIcon(IPoint& position) {
 
 void TestWidget::Draw() {
 
-	if (!_endGame) {
-		_scoreTable->Draw();
-	}
+	_scoreTable->Draw();
 
 	for (int r = 0; r < _row; r++) {
 		for (int c = 0; c < _col; c++) {

@@ -4,6 +4,7 @@
 #include "TextLabels.h"
 #include "Buttons.h"
 #include "Score.h"
+#include "TextWork.h"
 
 EndGameWidget::EndGameWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
@@ -14,6 +15,8 @@ EndGameWidget::EndGameWidget(const std::string& name, rapidxml::xml_node<>* elem
 }
 
 void EndGameWidget::Init() {
+	auto texto = UseTextWork::ReturnBestScoreForPrint();
+
 	_gameOver = Background::Create(Core::resourceManager.Get<Render::Texture>("gameOver"), IPoint(Render::device.Width()*.5, 840));
 	_notebook = Background::Create(Core::resourceManager.Get<Render::Texture>("notebook"), IPoint(Render::device.Width()*.5, Render::device.Height()*.5));
 	_yellowForReplay = Buttons::Create(Core::resourceManager.Get<Render::Texture>("yellowForReplay"), IPoint(_notebook->GetPosition().x, _notebook->GetPosition().y / 1.2));
@@ -22,6 +25,7 @@ void EndGameWidget::Init() {
 	_redForScore = Background::Create(Core::resourceManager.Get<Render::Texture>("redForScore"), IPoint(Render::device.Width()*.5, 100.f));
 	_whiteForBestScore = Background::Create(Core::resourceManager.Get<Render::Texture>("whiteForBestScore"), IPoint(435, _notebook->GetPosition().y - 162));
 	_finalScore = Score::CreateScore(IPoint(Render::device.Width()*.5, 525));
+	_bestScoreNum = TextLabels::CreateTextLabel(IPoint(300, 50), "lllll", 255, 128, 0);
 }
 
 void EndGameWidget::Draw() {
@@ -36,6 +40,7 @@ void EndGameWidget::Draw() {
 		_bestScore->Draw();
 		_whiteForBestScore->Draw();
 		_redForScore->Draw();
+		_bestScoreNum->Draw();
 	}
 	
 	if (isGameOver) {
@@ -55,6 +60,7 @@ void EndGameWidget::AcceptMessage(const Message& message) {
 
 	if (publisher == "EndGame") {
 		_finalScore->SetScore(std::stoi(data));
+		UseTextWork::WriteNewBestScore(std::stoi(data));
 		EndGame();
 	}
 
@@ -77,7 +83,9 @@ bool EndGameWidget::MouseDown(const IPoint& mouse_pos) {
 	
 	return false;
 }
-
+void EndGameWidget::PrintBestScore() {
+	
+}
 void EndGameWidget::MouseMove(const IPoint& mouse_pos) {
 
 }
